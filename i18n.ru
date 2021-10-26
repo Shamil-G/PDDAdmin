@@ -1,10 +1,10 @@
 ABOUT = О программе           
 APP_NAME = Администрирование тестирования, 2021
 ADD_PROGRAM = Добавить программу
-PERSONS_ADD = Загрузка тестируемых
 BUTTON_DELETE = Удалить 
 BUTTON_MODIFY = Изменить
 BUTTON_SAVE = Сохранить
+CATEGORY = Категория
 FILE_TO_LOAD = Файл к загрузке
 GET_REPORT = Получить отчет
 GOTO_LOAD = Перейти к загрузке
@@ -55,3 +55,4 @@ SELECT_DAT = Введите дату тестирования
 SOFT_REQUIREMENTS = Требования к программной части:
 SOFT_DEVELOPERS = Разработчик ПО
 TEST_PARTICIPANTS = Участники тестирования
+PERSONS_ADD = Загрузка тестируемых

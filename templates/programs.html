@@ -21,6 +21,7 @@
              <tr>
                  <th><a>{{ res_value('ID_TASK') }}</a></th>
                  <th><a>{{ res_value('PERIOD_FOR_TESTING') }}</a></th>
+                 <th><a>{{ res_value('CATEGORY') }}</a></th>
                  <th><a>{{ res_value('NAME_TASK') }}</a></th>
                  <th><a class="bt register" href="/program-add">{{ res_value('ADD_PROGRAM') }}</a></th>
                  <th></th>
@@ -32,6 +33,7 @@
               <tr>
                   <td><a class="command-detail" href="/program-detail/{{ el.id_task }}">{{ el.id_task }}</a></td>
                   <td><a class="command-detail" href="/program-detail/{{ el.id_task }}">{{ el.period_for_testing }}</a></td>
+                  <td><a class="command-detail" href="/program-detail/{{ el.id_task }}">{{ el.category }}</a></td>
                   <td><a class="command-detail" href="/program-detail/{{ el.id_task }}">{{ el.name_task }}</a></td>
                   <td><a class="bt register" href="/program-upd/{{ el.id_task }}">{{ res_value('PROGRAM_MODIFY') }}</a></td>
                   <td><a class="bt danger" href="/program-del/{{ el.id_task }}">{{ res_value('BUTTON_DELETE') }}</a></td>

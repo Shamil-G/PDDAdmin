@@ -8,9 +8,9 @@ import os.path
 def load_theme(id_task, file_name):
     s_now = datetime.datetime.now()
     if cfg.os == 'unix':
-       file_path = cfg.REPORTS_PATH + '/' + file_name
+       file_path = cfg.UPLOAD_PATH + '/' + file_name
     else:
-       file_path = cfg.REPORTS_PATH + '\\' + file_name
+       file_path = cfg.UPLOAD_PATH + '\\' + file_name
 
     # Нормируем путь к файлу по слэшам
     path = os.path.normpath(file_path)
@@ -38,20 +38,21 @@ def load_theme(id_task, file_name):
     id_prev_quest = -1
     order_num = 0
     for i in range(2, sheet.max_row+1):
-        id_curr_quest = sheet.cell(row=i, column=2).value
-        quest = sheet.cell(row=i, column=3).value
-        correctly = sheet.cell(row=i, column=4).value
-        answer = sheet.cell(row=i, column=5).value
+        id_curr_quest = sheet.cell(row=i, column=1).value
+        quest = sheet.cell(row=i, column=2).value
+        correctly = sheet.cell(row=i, column=3).value
+        answer = sheet.cell(row=i, column=4).value
+        url_image = sheet.cell(row=i, column=5).value
         order_num = order_num + 1
         if not quest:
             break
         if id_curr_quest != id_prev_quest:
             id_quest = id_quest + 1
             order_num = 1
-            id_question = cursor.callfunc("admin.add_question", str, [id_theme, id_quest, quest])
+            id_question = cursor.callfunc("admin.add_question", str, [id_theme, id_quest, url_image, quest])
 
         cmd = "insert into answers q (id_answer, id_question, order_num_answer, correctly, answer) " \
-              "values ( seq_answer.nextval, " + str(id_question) + ", " + str(order_num) + ", '" + correctly + "', '" + str(answer) + "')"
+              "values ( seq_answer.nextval, " + str(id_question) + ", " + str(order_num) + ", '" + str(correctly) + "', '" + str(answer) + "')"
         print('+++ CMD: ' + cmd)
         cursor.execute(cmd)
         id_prev_quest = id_curr_quest

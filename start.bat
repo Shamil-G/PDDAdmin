@@ -1,8 +1,8 @@
 set echo on
 python -m venv venv
-E:\PDD\venv\Scripts\activate.bat
-E:\PDD\venv\Scripts\python.exe -m pip install --upgrade pip
-E:\PDD\venv\Scripts\pip install flask
+E:\PDDAdmin\venv\Scripts\activate.bat
+E:\PDDAdmin\venv\Scripts\python.exe -m pip install --upgrade pip
+E:\PDDAdmin\venv\Scripts\pip install flask
 pip install flask_login
 pip install flask_sqlalchemy
 pip install cx_Oracle

@@ -10,7 +10,7 @@ def programs():
         print('Programs List ...')
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select id_task, coalesce(period_for_testing,0) period_for_testing, name_task from tasks order by 1 desc'
+    cmd = 'select id_task, category, coalesce(period_for_testing,0) period_for_testing, name_task from tasks order by 1 desc'
     cursor.execute(cmd)
     cursor.rowfactory = TaskF
     if cfg.debug_level > 3:
@@ -23,7 +23,7 @@ def program(id_task):
         print('Programs List ...')
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select id_task, coalesce(period_for_testing,0) period_for_testing, name_task ' \
+    cmd = 'select id_task, category, coalesce(period_for_testing,0) period_for_testing, name_task ' \
           'from tasks t ' \
           'where t.id_task=:id ' \
           'order by 1 desc'
@@ -34,13 +34,13 @@ def program(id_task):
     return cursor
 
 
-def program_upd(id_task, period_for_testing, name_task):
+def program_upd(id_task, category, period_for_testing, name_task):
     if cfg.debug_level > 0:
         print("1.+++ History Create " + name_task + " : ")
     try:
         con = get_connection()
         cursor = con.cursor()
-        cursor.callproc('admin.program_upd', [id_task, period_for_testing, name_task])
+        cursor.callproc('admin.program_upd', [id_task, category, period_for_testing, name_task])
         cursor.close()
         con.close()
         if cfg.debug_level > 0:
