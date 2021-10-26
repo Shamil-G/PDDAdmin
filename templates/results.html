@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('LOOK_RESULT') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1 class="title">{{ res_value('LOOK_RESULT') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form id="form1" name="myForm" class="form_history_create" method="POST">
+    <table>
+       <tbody>
+            <tr>
+                <td><p class="title2">{{ res_value('SELECT_ID_REG') }}</p></td>
+                <td><input type="hidden" size="5" maxlength="5" style="width: 100%" id="id_reg" name="id_reg"></td>
+                <td><input type="text" size="5" maxlength="5" style="width: 100%" id="id_reg2" name="id_reg2"></td>
+{#                <td><input type="hidden" size="5" maxlength="5" style="width: 100%" id="id_reg2" name="id_reg2"></td>#}
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('SELECT_IIN') }}</p></td>
+                <td><input type="hidden" size="12" maxlength="12" style="width: 100%" id="iin" name="iin"></td>
+                <td><input type="text" size="12" maxlength="12" style="width: 100%" id="iin2" name="iin2"></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('SELECT_DAT') }}</p></td>
+                <td><input type="hidden" size="24" locale="ru" maxlength="24" style="width: 100%" id="dat" name="dat"></td>
+                <td><input type="date" size="24" locale="ru" maxlength="24" style="width: 100%" id="dat2" name="dat2"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a class="bt save" href="javascript: hide_var()">{{ res_value('ORDER_REPORT') }}</a>
+    <script type="text/javascript">
+    function hide_var() {
+        var myForm = document.getElementById("form1")
+        myForm.elements.namedItem("id_reg").value = myForm.elements.namedItem("id_reg2").value;
+        myForm.elements.namedItem("iin").value = myForm.elements.namedItem("iin2").value;
+        myForm.elements.namedItem("dat").value = myForm.elements.namedItem("dat2").value;
+        myForm.elements.namedItem("id_reg2").value = ''
+        myForm.elements.namedItem("iin2").value = ''
+        myForm.elements.namedItem("dat2").value = ''
+        document.getElementById('form1').submit()
+    }
+    </script>
+</form>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('PROGRAM_MODIFY') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1 class="title">{{ res_value('PROGRAM_MODIFY') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_history_create" method="POST">
+<!--<form class="form_register" method="POST">-->
+    <table>
+       <tbody>
+       {%  for el in cursor %}
+            <tr>
+                <td><p class="title2">{{ res_value('PERIOD_FOR_TESTING') }}</p></td>
+                <td><input type="text" size="5" maxlength="5" style="width: 10%" name="period_for_testing" value="{{ el.period_for_testing }}"><br></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('NAME_TASK') }}</p></td>
+                <td><input type="text" size="96" maxlength="256" style="width: 100%" name="name_task" value="{{ el.name_task }}"><br></td>
+            </tr>
+       {%  endfor %}
+        </tbody>
+    </table>
+    <input type="submit" class="bt save" value="{{ res_value('SAVE') }}">
+</form>
+{% endblock %}

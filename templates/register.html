@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('REGISTER_NEW_USER') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1 class="title">{{ res_value('REGISTER_NEW_USER') }}</h1>
+{% endblock %}
+
+{% block body %}
+<div class="title_message">
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for msg in messages %}
+                <li>{{ msg }} </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+</div>
+<form class="form_register" method="POST">
+    <table>
+        <tr>
+            <td><a>{{ res_value('NEW_NICKNAME') }}</a></td>
+            <td><input class="form_username" type="text" name="username"></td>
+        </tr>
+        <tr>
+            <td><a>{{ res_value('PASSWORD') }}</a></td>
+            <td><input class="form_password" type="password" name="password"></td>
+        </tr>
+        <tr>
+            <td><a>{{ res_value('REPEATE_PASSWORD') }}</a></td>
+            <td><input class="form_password" type="password" name="password2"></td>
+        </tr>
+        <tr>
+        <td><input class="bt register" type="submit" value="{{ res_value('REGISTER') }}"></td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

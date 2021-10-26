@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('PROGRAMS') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1  class="title">{{ res_value('PROGRAMS') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_register" method="POST">
+     <table class="table_model_status">
+         <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+         </colgroup>
+         <thead>
+             <tr>
+                 <th><a>{{ res_value('ID_TASK') }}</a></th>
+                 <th><a>{{ res_value('PERIOD_FOR_TESTING') }}</a></th>
+                 <th><a>{{ res_value('NAME_TASK') }}</a></th>
+                 <th><a class="bt register" href="/program-add">{{ res_value('ADD_PROGRAM') }}</a></th>
+                 <th></th>
+             </tr>
+         </thead>
+         <tfoot></tfoot>
+         <tbody>
+            {% for el in cursor %}
+              <tr>
+                  <td><a class="command-detail" href="/program-detail/{{ el.id_task }}">{{ el.id_task }}</a></td>
+                  <td><a class="command-detail" href="/program-detail/{{ el.id_task }}">{{ el.period_for_testing }}</a></td>
+                  <td><a class="command-detail" href="/program-detail/{{ el.id_task }}">{{ el.name_task }}</a></td>
+                  <td><a class="bt register" href="/program-upd/{{ el.id_task }}">{{ res_value('PROGRAM_MODIFY') }}</a></td>
+                  <td><a class="bt danger" href="/program-del/{{ el.id_task }}">{{ res_value('BUTTON_DELETE') }}</a></td>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+    </table><br>
+</form>
+{% endblock %}

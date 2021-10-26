@@ -1,0 +1,16 @@
+.form_history_create, .form_register, .form_login
+{
+    color: #0c5460;
+    background-color: rgba(239, 220, 112, 0.08);
+}
+.form_history_create, .form_register, .form_login
+{
+    margin: 4px;
+    padding: 9px;
+}
+.form_history_create, .form_register, .form_login
+{
+    border-radius: 5px;
+    border: 1px solid rgba(0, 47, 189, 0.15);
+}
+

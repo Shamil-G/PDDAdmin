@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('LOOK_RESULT') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1 class="title">{{ res_value('LOOK_RESULT') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_history_create" method="POST">
+    <table>
+       <tbody>
+            <tr>
+                <td><a class="title2">{{ res_value('FILE_TO_LOAD') }}: &emsp;{{ filename }}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="submit" class="bt save" value="{{ res_value('GET_REPORT') }}">
+</form>
+
+{% endblock %}
