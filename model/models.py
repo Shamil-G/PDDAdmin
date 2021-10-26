@@ -17,12 +17,14 @@ class TaskF:
 
 
 class ThemesF:
-    def __init__(self, id_task, id_theme, theme_number, count_question, count_success, theme_name):
+    def __init__(self, id_task, id_theme, theme_number, count_question, count_success, period_for_testing, active, theme_name):
         self.id_task = id_task
         self.id_theme = id_theme
         self.theme_number = theme_number
         self.count_question = count_question
         self.count_success = count_success
+        self.period_for_testing = period_for_testing
+        self.active = active
         self.theme_name = theme_name
 
 

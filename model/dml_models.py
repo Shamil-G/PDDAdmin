@@ -115,11 +115,10 @@ def themes(id_task):
         print('History Detail id_hist: '+str(id_task))
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select bt.id_task, bt.id_theme, bt.theme_number, bt.count_question, bt.count_success, ' \
-          't.descr as theme_name ' \
-          'from bundle_themes bt, themes t ' \
-          'where bt.id_task=:id ' \
-          'and   bt.id_theme=t.id_theme'
+    cmd = 'select th.id_task, th.id_theme, th.theme_number, th.count_question, th.count_success, ' \
+          'th.period_for_testing, th.active, th.descr as theme_name ' \
+          'from themes th ' \
+          'where th.id_task=:id ' \
     # print('CMD: '+cmd)
     cursor.execute(cmd, [id_task])
     cursor.rowfactory = ThemesF
@@ -133,11 +132,11 @@ def theme(id_task, id_theme):
         print('Theme id_theme: '+str(id_theme))
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select bt.id_task, bt.id_theme, bt.theme_number, bt.count_question, bt.count_success,  t.descr as theme_name ' \
-          'from bundle_themes bt, themes t ' \
-          'where bt.id_task=:id1 ' \
-          'and   bt.id_theme=:id2 ' \
-          'and   bt.id_theme=t.id_theme'
+    cmd = 'select th.id_task, th.id_theme, th.theme_number, th.count_question, th.count_success, ' \
+          'th.period_for_testing, th.active, th.descr as theme_name ' \
+          'from  themes th ' \
+          'where th.id_task=:id_task ' \
+          'and th.id_theme=:id_theme '
     # print('CMD: '+cmd)
     cursor.execute(cmd, [id_task, id_theme])
     cursor.rowfactory = ThemesF

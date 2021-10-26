@@ -31,7 +31,8 @@ def load_theme(id_task, file_name):
     con = get_connection()
     cursor = con.cursor()
     # Создадим новое задание
-    id_theme = cursor.callfunc('admin.theme_new', int, (id_task, file_name))
+    file_split = os.path.splitext(file_name)
+    id_theme = cursor.callfunc('admin.theme_new', int, (id_task, file_split[0]))
     if not id_theme:
         print('Ошибка регистрации нового задания...')
     id_quest = 0
