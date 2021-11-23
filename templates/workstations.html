@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('LIST_WORKSTATIONS') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1  class="title">{{ res_value('LIST_WORKSTATIONS') }}:&emsp;{{ code_center }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_register" method="POST">
+     <table class="table_model_status">
+         <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+         </colgroup>
+         <thead>
+             <tr>
+{#                 <th><a>{{ res_value('ID_PC') }}</a></th>#}
+{#                 <th><a>{{ res_value('CODE_CENTER') }}</a></th>#}
+                 <th><a>{{ res_value('ACTIVE') }}</a></th>
+{#                 <th><a>{{ res_value('NUM_DEVICE') }}</a></th>#}
+                 <th><a>{{ res_value('DATE_OP') }}</a></th>
+                 <th><a>{{ res_value('IP_ADDR') }}</a></th>
+                 <th><a>{{ res_value('MAC_ADDR') }}</a></th>
+                 <th><a class="bt register" href="/workstation-add/{{ code_center }}">{{ res_value('ADD_WORKSTATION') }}</a></th>
+                 <th></th>
+             </tr>
+         </thead>
+         <tfoot></tfoot>
+         <tbody>
+            {% for el in cursor %}
+              <tr>
+{#                  <td><a class="command-detail" href="/workstation-upd/{{ el.id_pc }}">{{ el.id_pc }}</a></td>#}
+{#                  <td><a class="command-detail" href="/workstation-upd/{{ el.id_pc }}">{{ el.code_center }}</a></td>#}
+                  <td><a class="command-detail" href="/workstation-del/{{ code_center }}/{{ el.id_pc }}">{{ el.active }}</a></td>
+{#                  <td><a class="command-detail" href="/workstation-upd/{{ el.id_pc }}">{{ el.num_device }}</a></td>#}
+                  <td><a class="command-detail">{{ el.date_op }}</a></td>
+                  <td><a class="command-detail">{{ el.ip_addr }}</a></td>
+                  <td><a class="command-detail">{{ el.mac }}</a></td>
+                  <td><a class="bt register" href="/workstation-upd/{{ code_center }}/{{ el.id_pc }}">{{ res_value('MODIFY_WS') }}</a></td>
+                  <td><a class="bt danger" href="/workstation-del/{{ code_center }}/{{ el.id_pc }}">{{ res_value('BUTTON_DELETE') }}</a></td>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+    </table><br>
+</form>
+{% endblock %}

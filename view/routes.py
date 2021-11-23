@@ -1,16 +1,13 @@
-from main_app import app
-from flask import render_template, request, redirect, g, flash
-from flask_login import login_required
-from reports.load_theme import load_theme, load_persons
-from model.dml_models import *
-from reports.print_personal_report import *
-from reports.print_full_personal_report import *
-from reports.print_date_report import *
-import cx_Oracle
-from datetime import datetime
-import config as cfg
+from flask import render_template, flash, request,  Response, redirect, g, make_response
+from flask_login import login_required, current_user, logout_user
+from datetime import date
 from model.utils import *
-#  Не удалять - неправильно красит среда!!!
+# from model.testing import *
+from model.dml_models import *
+from model.model_login import *
+from main_app import app, log, cfg
+from reports.print_personal_report import print_result_test
+from view.routes_regions import *
 
 if cfg.debug_level > 0:
     print("Routes стартовал...")
@@ -68,9 +65,11 @@ def view_program_upd(id_task):
         print("Добавляем программу !")
     if request.method == "POST":
         period_for_testing = request.form['period_for_testing']
+        category = request.form['category']
+        language = request.form['language']
         name_task = request.form['name_task']
         try:
-            program_upd(id_task, period_for_testing, name_task)
+            program_upd(id_task, period_for_testing, category, language, name_task)
             return redirect(url_for('view_programs'))
         except cx_Oracle.IntegrityError as e:
             errorObj, = e.args

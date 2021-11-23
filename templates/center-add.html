@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('ADD_CENTER') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1 class="title">{{ res_value('ADD_CENTER') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_history_create" method="POST">
+<!--<form class="form_register" method="POST">-->
+    <table>
+       <tbody>
+            <tr>
+                <td><p class="title2">{{ res_value('ID_REGION') }}:&emsp;{{ id_region }}</p></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('CODE_CENTER') }}:</p></td>
+            </tr>
+            <tr>
+                <td><input type="text" size="64" maxlength="128" style="width: 100%" name="code_center"><br></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('CENTER_SHORT_NAME_RU') }}:</p></td>
+            </tr>
+            <tr>
+                <td><input type="text" size="64" maxlength="128" style="width: 100%" name="name_short_ru"></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('CENTER_SHORT_NAME_KZ') }}:</p></td>
+            </tr>
+            <tr>
+                <td><input type="text" size="64" maxlength="128" style="width: 100%" name="name_short_kz"><br></td>
+            <tr>
+                <td><p class="title2">{{ res_value('CENTER_NAME_RU') }}:</p></td>
+            </tr>
+            <tr>
+                <td><input type="text" size="64" maxlength="128" style="width: 100%" name="name_ru"><br></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('CENTER_NAME_KZ') }}:</p></td>
+            </tr>
+            <tr>
+                <td><input type="text" size="64" maxlength="128" style="width: 100%" name="name_kz"><br></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <input type="submit" class="bt save" value="{{ res_value('SAVE') }}">
+</form>
+{% endblock %}

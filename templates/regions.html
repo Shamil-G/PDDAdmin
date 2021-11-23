@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('PROGRAMS') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1  class="title">{{ res_value('PROGRAMS') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_register" method="POST">
+     <table class="table_model_status">
+         <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+         </colgroup>
+         <thead>
+             <tr>
+                 <th><a>{{ res_value('ID_REGION') }}</a></th>
+                 <th><a>{{ res_value('ACTIVE') }}</a></th>
+                 <th><a>{{ res_value('DATE_OP') }}</a></th>
+                 <th><a>{{ res_value('REGION_NAME_RU') }}</a></th>
+                 <th><a>{{ res_value('REGION_NAME_KZ') }}</a></th>
+                 <th><a class="bt register" href="/region-add">{{ res_value('ADD_REGION') }}</a></th>
+                 <th></th>
+             </tr>
+         </thead>
+         <tfoot></tfoot>
+         <tbody>
+            {% for el in cursor %}
+              <tr>
+                  <td><a class="command-detail" href="/region-upd/{{ el.id_region }}">{{ el.id_region }}</a></td>
+                  <td><a class="command-detail" href="/region-del/{{ el.id_region }}">{{ el.active }}</a></td>
+                  <td><a class="command-detail" href="/region-upd/{{ el.id_region }}">{{ el.date_op }}</a></td>
+                  <td><a class="command-detail" href="/region-upd/{{ el.id_region }}">{{ el.name_ru }}</a></td>
+                  <td><a class="command-detail" href="/region-upd/{{ el.id_region }}">{{ el.name_kz }}</a></td>
+                  <td><a class="bt register" href="/centers/{{ el.id_region }}">{{ res_value('MODIFY_REGION') }}</a></td>
+                  <td><a class="bt danger" href="/region-del/{{ el.id_region }}">{{ res_value('BUTTON_DELETE') }}</a></td>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+    </table><br>
+</form>
+{% endblock %}

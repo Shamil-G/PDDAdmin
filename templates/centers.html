@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('LIST_CENTERS') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1  class="title">{{ res_value('LIST_CENTERS') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_register" method="POST">
+     <table class="table_model_status">
+         <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+         </colgroup>
+         <thead>
+             <tr>
+                 <th><a>{{ res_value('ID_CENTER') }}</a></th>
+                 <th><a>{{ res_value('ACTIVE') }}</a></th>
+                 <th><a>{{ res_value('DATE_OP') }}</a></th>
+                 <th><a>{{ res_value('CODE_CENTER') }}</a></th>
+                 <th><a>{{ res_value('NAME_RU') }}</a></th>
+                 <th><a>{{ res_value('NAME_KZ') }}</a></th>
+                 <th><a class="bt register" href="/center-add/{{ id_region }}">{{ res_value('ADD_CENTER') }}</a></th>
+                 <th></th>
+             </tr>
+         </thead>
+         <tfoot></tfoot>
+         <tbody>
+            {% for el in cursor %}
+              <tr>
+                  <td><a class="command-detail" href="/center-upd/{{ el.id_region }}/{{ el.id_center }}">{{ el.id_center }}</a></td>
+                  <td><a class="command-detail" href="/center-del/{{ el.id_region }}/{{ el.id_center }}">{{ el.active }}</a></td>
+                  <td><a class="command-detail" href="/center-upd/{{ el.id_region }}/{{ el.id_center }}">{{ el.date_op }}</a></td>
+                  <td><a class="command-detail" href="/center-upd/{{ el.id_region }}/{{ el.id_center }}">{{ el.code_center }}</a></td>
+                  <td><a class="command-detail" href="/center-upd/{{ el.id_region }}/{{ el.id_center }}">{{ el.name_short_ru }}</a></td>
+                  <td><a class="command-detail" href="/center-upd/{{ el.id_region }}/{{ el.id_center }}">{{ el.name_short_kz }}</a></td>
+                  <td><a class="bt register" href="/workstations/{{ el.code_center }}">{{ res_value('MODIFY_CENTER') }}</a></td>
+                  <td><a class="bt danger" href="/center-del/{{ el.id_region }}/{{ el.id_center }}">{{ res_value('BUTTON_DELETE') }}</a></td>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+    </table><br>
+</form>
+{% endblock %}

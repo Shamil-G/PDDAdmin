@@ -4,8 +4,9 @@ from flask_login import LoginManager, login_required, logout_user, login_user, c
 import cx_Oracle
 from werkzeug.security import check_password_hash, generate_password_hash
 from db_oracle.connect import get_connection
-from main_app import app
+from main_app import app, log
 import config as cfg
+
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login_page'
@@ -14,12 +15,36 @@ if cfg.debug_level > 0:
 
 
 class User:
-    id_user = -1
+    id_user = 0
+    id_center = 0
     username = ''
     password = ''
     active = ''
+    ip_addr = ''
     roles: List[Any] = []
     debug = False
+
+    def get_user_by_name(self, username):
+        log.info('LM. Get User By Name: ' + str(username))
+        conn = get_connection()
+        cursor = conn.cursor()
+        password = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
+        id_user = cursor.var(cx_Oracle.DB_TYPE_NUMBER)
+        id_center = cursor.var(cx_Oracle.DB_TYPE_NUMBER)
+        self.ip_addr = request.remote_addr
+        cursor.callproc('cop.login_admin', (username, password, self.ip_addr, id_user, id_center))
+        self.username = username
+        self.password = password.getvalue()
+        self.id_user = int(id_user.getvalue())
+        self.id_center = int(id_center.getvalue())
+        log.info('LM. Get User By Name: ' + str(self.username) + ' : ' + ' : ' + str(self.password))
+        self.get_roles(cursor)
+        cursor.close()
+        conn.close()
+        if not self.password:
+            return None
+        else:
+            return self
 
     def new_user(i_username, i_password):
         hash_pwd = generate_password_hash(i_password)
@@ -46,27 +71,6 @@ class User:
             cnt = 1
             for role in self.roles:
                 print("---- " + str(cnt) + ". Role: " + role)
-
-    def get_user_by_name(self, user_name):
-        conn = get_connection()
-        cursor = conn.cursor()
-        password = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
-        id_user = cursor.var(cx_Oracle.DB_TYPE_NUMBER)
-        cursor.callproc('cop.login_admin', (user_name, password, id_user))
-        self.username = user_name
-        self.password = password.getvalue()
-        self.id_user = id_user.getvalue()
-
-        if cfg.debug_level > 3:
-            print("++++ get_user_by_name: " + self.username + ' : ' + ' : ' + self.password)
-
-        self.get_roles(cursor)
-        cursor.close()
-        conn.close()
-        if self.password is None:
-            return None
-        else:
-            return self
 
     def have_role(self, role_name):
         return role_name in self.roles

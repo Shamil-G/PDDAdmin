@@ -73,3 +73,6 @@ class I18N:
         self.file_names.clear()
         self.files.clear()
         self.objects.clear()
+
+
+i18n = I18N()

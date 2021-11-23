@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('ADD_REGION') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1 class="title">{{ res_value('ADD_REGION') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_history_create" method="POST">
+<!--<form class="form_register" method="POST">-->
+    <table>
+       <tbody>
+            <tr>
+                <td><p class="title2">{{ res_value('REGION_NAME_RU') }}</p></td>
+                <td><input type="text" size="64" maxlength="128" style="width: 100%" name="name_ru"><br></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('REGION_NAME_KZ') }}</p></td>
+                <td><input type="text" size="64" maxlength="128" style="width: 100%" name="name_kz"><br></td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="submit" class="bt save" value="{{ res_value('SAVE') }}">
+</form>
+{% endblock %}

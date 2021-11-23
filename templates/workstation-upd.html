@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('UPD_WORKSTATION') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1 class="title">{{ res_value('UPD_WORKSTATION') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_history_create" method="POST">
+<!--<form class="form_register" method="POST">-->
+    <table>
+       <tbody>
+        {% for el in cursor %}
+            <tr>
+                <td><p class="title2">{{ res_value('CODE_CENTER') }}:&emsp;{{ code_region }}</p></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('IP_ADDR') }}:&nbsp;{{ el.ip_addr }}</p></td>
+            </tr>
+            <tr>
+                <td><input type="text" size="16" maxlength="16" style="width: 100%" name="ip_addr"></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('MAC_ADDR') }}:&nbsp;{{ el.mac }}</p></td>
+            </tr>
+            <tr>
+                <td><input type="text" size="18" maxlength="18" style="width: 100%" name="mac"><br></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input type="submit" class="bt save" value="{{ res_value('SAVE') }}">
+</form>
+{% endblock %}
