@@ -26,13 +26,14 @@ class CenterF(object):
 
 
 class WorkstationF(object):
-    def __init__(self, id_pc, code_center, active, date_op, ip_addr, mac):
+    def __init__(self, id_pc, code_center, active, date_op, ip_addr, mac, status):
         self.id_pc = id_pc
         self.code_center = code_center
         self.active = active
         self.date_op = date_op
         self.ip_addr = ip_addr
         self.mac = mac
+        self.status = status
 
 
 def regions():
@@ -128,7 +129,7 @@ def list_workstations(code_center):
         print('Programs List ...' + code_center)
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select id_pc, code_center, active, date_op, ip_addr, mac ' \
+    cmd = 'select id_pc, code_center, active, date_op, ip_addr, mac, status ' \
           'from pdd_testing.list_workstation c ' \
           'where c.code_center = :p1 ' \
           'order by ip_addr'
@@ -138,7 +139,7 @@ def list_workstations(code_center):
     rows = cursor.fetchall()
     for row in rows:
         rec = {'id_pc': row.id_pc, 'code_center': row.code_center, 'active': row.active,
-               'date_op': row.date_op, 'ip_addr': row.ip_addr, 'mac': row.mac}
+               'date_op': row.date_op, 'ip_addr': row.ip_addr, 'mac': row.mac, 'status': row.status}
         results.append(rec)
     cursor.close()
     con.close()
@@ -150,7 +151,7 @@ def workstation(id_pc):
         print('Programs List ...' + str(id_pc))
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select id_pc, code_center, active, date_op, ip_addr, mac ' \
+    cmd = 'select id_pc, code_center, active, date_op, ip_addr, mac, status ' \
           'from pdd_testing.list_workstation c ' \
           'where c.id_pc = :p1 ' \
           'order by ip_addr'
@@ -160,7 +161,7 @@ def workstation(id_pc):
     rows = cursor.fetchall()
     for row in rows:
         rec = {'id_pc': row.id_pc, 'code_center': row.code_center, 'active': row.active,
-               'date_op': row.date_op, 'ip_addr': row.ip_addr, 'mac': row.mac}
+               'date_op': row.date_op, 'ip_addr': row.ip_addr, 'mac': row.mac, 'status': row.status}
         results.append(rec)
     cursor.close()
     con.close()
@@ -251,5 +252,15 @@ def workstation_del(id_pc):
     con = get_connection()
     cursor = con.cursor()
     cursor.callproc('pdd_testing.admin.workstation_del', [id_pc])
+    cursor.close()
+    con.close()
+
+
+def workstation_stat(id_pc):
+    if cfg.debug_level > 3:
+        print('Workstation Status ...' + str(id_pc))
+    con = get_connection()
+    cursor = con.cursor()
+    cursor.callproc('pdd_testing.admin.workstation_stat', [id_pc])
     cursor.close()
     con.close()

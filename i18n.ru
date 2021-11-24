@@ -83,3 +83,4 @@ CENTER_SHORT_NAME_RU = Краткое название на русском
 CENTER_SHORT_NAME_KZ = Краткое название на казахском
 CENTER_NAME_RU = Полное название на русском
 CENTER_NAME_KZ = Полное название на казахском
+WORKS_STATUS = Статус

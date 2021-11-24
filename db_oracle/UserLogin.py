@@ -58,7 +58,7 @@ class User:
 
     def get_roles(self, cursor):
         if cfg.debug_level > 1:
-            print("---- User. Get roles for: " + self.username)
+            print("---- User. Get roles for: " + str(self.username))
         cursor.execute("select r.name from roles r, users u, users_roles us " +
                        "where u.id_user=us.id_user " +
                        "and   r.id_role=us.id_role " +
@@ -100,7 +100,7 @@ class User:
 @login_manager.user_loader
 def loader_user(username):
     if cfg.debug_level > 0:
-        print("LoginManager.user_load: " + username)
+        print("LoginManager.user_load: " + str(username))
     return User().get_user_by_name(username)
 
 

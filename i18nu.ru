@@ -67,3 +67,4 @@ IP_ADDR = IP адрес
 MAC_ADDR = MAC адрес
 ADD_WORKSTATION = Добавить станцию
 MODIFY_WS = Корректировать
+WORKS_STATUS = Статус

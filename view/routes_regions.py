@@ -114,3 +114,10 @@ def view_workstation_add(code_center):
 def view_workstation_del(code_center, id_pc):
     workstation_del(id_pc)
     return redirect(url_for('view_workstations', code_center=code_center))
+
+
+@app.route('/workstation-stat/<string:code_center>/<int:id_pc>')
+@login_required
+def view_workstation_stat(code_center, id_pc):
+    workstation_stat(id_pc)
+    return redirect(url_for('view_workstations', code_center=code_center))

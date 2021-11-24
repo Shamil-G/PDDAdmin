@@ -22,7 +22,7 @@
 {#                 <th><a>{{ res_value('ID_PC') }}</a></th>#}
 {#                 <th><a>{{ res_value('CODE_CENTER') }}</a></th>#}
                  <th><a>{{ res_value('ACTIVE') }}</a></th>
-{#                 <th><a>{{ res_value('NUM_DEVICE') }}</a></th>#}
+                 <th><a>{{ res_value('WORKS_STATUS') }}</a></th>
                  <th><a>{{ res_value('DATE_OP') }}</a></th>
                  <th><a>{{ res_value('IP_ADDR') }}</a></th>
                  <th><a>{{ res_value('MAC_ADDR') }}</a></th>
@@ -37,6 +37,7 @@
 {#                  <td><a class="command-detail" href="/workstation-upd/{{ el.id_pc }}">{{ el.id_pc }}</a></td>#}
 {#                  <td><a class="command-detail" href="/workstation-upd/{{ el.id_pc }}">{{ el.code_center }}</a></td>#}
                   <td><a class="command-detail" href="/workstation-del/{{ code_center }}/{{ el.id_pc }}">{{ el.active }}</a></td>
+                  <td><a class="command-detail" href="/workstation-stat/{{ code_center }}/{{ el.id_pc }}">{{ el.status }}</a></td>
 {#                  <td><a class="command-detail" href="/workstation-upd/{{ el.id_pc }}">{{ el.num_device }}</a></td>#}
                   <td><a class="command-detail">{{ el.date_op }}</a></td>
                   <td><a class="command-detail">{{ el.ip_addr }}</a></td>
