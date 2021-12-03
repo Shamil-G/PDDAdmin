@@ -27,14 +27,14 @@
         </header>
 
         <nav class="nav">
-            <a class="a_list" href="/">{{ res_value('PROGRAMS') }}</a>
-            <a class="a_list" href="/program-add">{{ res_value('ADD_PROGRAM') }}</a>
-            <a class="a_list" href="/regions">{{ res_value('LIST_REGIONS') }}</a>
           {% if g.user.is_anonymous == True %}
             <a class="a_list" href="/about">{{ res_value('ABOUT') }}</a>
             <a class="a_list" href="/login">{{ res_value('LOGIN') }}</a>
             <p></p>
-            {% else %}
+        {% else %}
+            <a class="a_list" href="/">{{ res_value('PROGRAMS') }}</a>
+            <a class="a_list" href="/regions">{{ res_value('LIST_REGIONS') }}</a>
+            <a class="a_list" href="/roles">{{ res_value('LIST_ROLES') }}</a>
             <a class="a_list" href="/results">{{ res_value('GOTO_RESULTS') }}</a>
             <a class="a_list" href="/result-full">{{ res_value('GOTO_RESULT_FULL') }}</a>
             <a class="a_list" href="/about">{{ res_value('ABOUT') }}</a>

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('ROLES') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1  class="title">{{ res_value('LIST_ROLES') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_register" method="POST">
+     <table class="table_model_status">
+         <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+         </colgroup>
+         <thead>
+             <tr>
+                 <th><a>{{ res_value('ID_ROLE') }}</a></th>
+                 <th><a>{{ res_value('ACTIVE') }}</a></th>
+                 <th><a>{{ res_value('NAME_ROLE') }}</a></th>
+                 <th><a>{{ res_value('NAME_ROLE_FULL') }}</a></th>
+                 <th><a class="bt register" href="/role-add">{{ res_value('ADD_ROLE') }}</a></th>
+             </tr>
+         </thead>
+         <tfoot></tfoot>
+         <tbody>
+            {% for el in cursor %}
+              <tr>
+                  <td><a>{{ el.id_role }}</a></td>
+                  <td><a href="/role-delete/{{ el.id_role }}">{{ el.active }}</a></td>
+                  <td><a href="/role-detail/{{ el.id_role }}">{{ el.name }}</a></td>
+                  <td><div style="text-align: left"><a>{{ el.full_name }}</a></div></td>
+                  <td><a class="bt register" href="/role-users/{{ el.id_role }}">{{ res_value('PARTICIPENT_ROLE') }}</a></td>
+              </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+    </table><br>
+</form>
+{% endblock %}

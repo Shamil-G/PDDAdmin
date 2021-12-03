@@ -9,10 +9,8 @@ print("Модель стартовала...")
 
 
 class TaskF:
-    def __init__(self, id_task, period_for_testing, category, language, name_task):
+    def __init__(self, id_task, language, name_task):
         self.id_task = id_task
-        self.period_for_testing = period_for_testing
-        self.category = category
         self.language = language
         self.name_task = name_task
 

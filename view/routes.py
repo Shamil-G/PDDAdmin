@@ -8,6 +8,7 @@ from model.model_login import *
 from main_app import app, log, cfg
 from reports.print_personal_report import print_result_test
 from view.routes_regions import *
+from loading.load_pdd import load_task
 
 if cfg.debug_level > 0:
     print("Routes стартовал...")
@@ -62,14 +63,12 @@ def view_program_add():
 @login_required
 def view_program_upd(id_task):
     if cfg.debug_level > 1:
-        print("Добавляем программу !")
+        log.debug("Добавляем программу !")
     if request.method == "POST":
-        period_for_testing = request.form['period_for_testing']
-        category = request.form['category']
         language = request.form['language']
         name_task = request.form['name_task']
         try:
-            program_upd(id_task, period_for_testing, category, language, name_task)
+            program_upd(id_task, language, name_task)
             return redirect(url_for('view_programs'))
         except cx_Oracle.IntegrityError as e:
             errorObj, = e.args
@@ -116,22 +115,9 @@ def upload_file(id_task):
 def upload_file_theme(id_task, upl_file):
     print("+++ upload_file_theme: " + upl_file)
     if request.method == "POST" and upl_file:
-        load_theme(id_task, upl_file)
+        load_task(id_task, upl_file)
         return redirect(url_for('view_program_detail', id_task=id_task))
     return render_template("load-theme.html", id_task=id_task, name_task=get_name_program(id_task), upl_file=upl_file)
-
-
-# @app.route('/load-persons/<int:id_task>')
-# def upload_person(id_task):
-#     return render_template("load-persons.html", id_task=id_task, name_task=get_name_program(id_task))
-
-
-@app.route('/load-persons/<int:id_task>/<string:upl_file>', methods=['GET', 'POST'])
-def upload_file_persons(id_task, upl_file):
-    if request.method == "POST" and upl_file:
-        load_persons(id_task, upl_file)
-        return redirect(url_for('view_program_detail', id_task=id_task))
-    return render_template("load-persons.html", id_task=id_task, name_task=get_name_program(id_task), upl_file=upl_file)
 
 
 @app.route('/theme/<int:id_task>/<int:id_theme>', methods=['POST', 'GET'])
@@ -153,52 +139,76 @@ def view_theme_delete(id_task, id_theme):
     return redirect(url_for('view_program_detail', id_task=id_task))
 
 
+@app.route('/roles')
+def view_roles():
+    return render_template("roles.html", cursor=all_roles())
+
+
+@app.route('/role-delete/<int:id_role>')
+def view_role_delete(id_role):
+    role_delete(id_role)
+    return render_template("roles.html", cursor=all_roles())
+
+
+@app.route('/role-add', methods=['POST', 'GET'])
+def view_role_add():
+    if cfg.debug_level > 1:
+        print("Добавляем  Роль !")
+    if request.method == "POST":
+        try:
+            name = request.form['name_role']
+            full_name = request.form['full_name_role']
+            role_add(name, full_name)
+        finally:
+            if cfg.debug_level > 0:
+                print("ROLE_ADD. Вход по GET")
+            return redirect("/roles")
+    return render_template("role-add.html")
+
+
+@app.route('/role-detail/<int:id_role>', methods=['POST', 'GET'])
+def view_role_upd(id_role):
+    if cfg.debug_level > 1:
+        print("Добавляем программу !")
+    if request.method == "POST":
+        try:
+            name = request.form['name_role']
+            full_name = request.form['full_name_role']
+            role_upd(id_role, name, full_name)
+        finally:
+            if cfg.debug_level > 0:
+                print("ROLE_UPD. Вход по GET")
+            return redirect("/roles")
+    return render_template("role-upd.html")
+
+
+@app.route('/role-detail/<int:id_role>')
+def view_role_detail(id_role):
+    return render_template("roles.html", cursor=all_roles())
+
+
+@app.route('/role-users/<int:id_role>')
+def view_role_users(id_role):
+    _all_users = all_users()
+    _role_users = role_users(id_role)
+    for user in _role_users:
+        _all_users.remove(user)
+    return render_template("role-users.html", id_role=id_role, all_users=_all_users, role_users=_role_users)
+
+
+@app.route('/role-users-add/<int:id_role>/<int:id_user>')
+def view_role_users_add(id_role, id_user):
+    role_user_add(id_role, id_user)
+    return redirect(url_for('view_role_users', id_role=id_role))
+
+
+@app.route('/role-users-del/<int:id_role>/<int:id_user>')
+def view_role_users_del(id_role, id_user):
+    role_user_del(id_role, id_user)
+    return redirect(url_for('view_role_users', id_role=id_role))
+
+
 @app.route('/user/<string:name>/<int:id_user>')
 def user_page(name, id_user):
     return "User: " + name + " : " + str(id_user)
 
-
-@app.route('/results', methods=['POST', 'GET'])
-def view_results():
-    file_name = ''
-    if request.method == "POST":
-        id_reg = request.form['id_reg']
-        if id_reg:
-            print('Получен ID_REG: ' + id_reg)
-            file_name = print_result_test(id_reg)
-            app.logger.debug('++++ DEBUG. We are in RESULTS ...')
-        else:
-            iin = request.form['iin']
-            print('view_results by iin: ' + str(iin))
-            iin2 = request.form['iin2']
-            print('view_results by iin: ' + str(iin) + str(iin2))
-            if iin:
-                if cfg.debug_level > 2:
-                    print('view_results by iin: ' + str(iin))
-                file_name = print_result_test_by_iin(iin)
-            else:
-                form_dat = request.form['dat']
-                dat = form_dat.split('-')[2] + '.' + form_dat.split('-')[1] + '.' + form_dat.split('-')[0]
-                print('view_results: ' + str(dat))
-                if dat:
-                    file_name = print_result_by_date(dat)
-        if file_name:
-            return redirect(url_for('uploaded_file', filename=file_name))
-    return render_template("results.html")
-
-
-@app.route('/result-full', methods=['POST', 'GET'])
-def view_results_full():
-    file_name = ''
-    if request.method == "POST":
-        iin = request.form['iin']
-        print('view_results by iin: ' + str(iin))
-        iin2 = request.form['iin2']
-        print('view_results by iin: ' + str(iin) + str(iin2))
-        if iin:
-            if cfg.debug_level > 2:
-                print('view_results by iin: ' + str(iin))
-            file_name = print_full_result_test_by_iin(iin)
-        if file_name:
-            return redirect(url_for('uploaded_file', filename=file_name))
-    return render_template("result-full.html")

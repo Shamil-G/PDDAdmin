@@ -1,8 +1,14 @@
 username = 'pdd_testing'
 password = 'pdd_01235'
-host = '10.51.203.166'
+host = 'db_pdd'
 port = 1521
 service = 'pdd'
 encoding = 'UTF-8'
 dsn = '10.51.203.166:1521/pdd'
+timeout = 300       # В секундах. Время простоя, после которого курсор освобождается
+wait_timeout = 5000
+max_lifetime_session = 2800
+pool_min = 4
+pool_max = 8
+pool_inc = 4
 Debug = True

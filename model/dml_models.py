@@ -1,7 +1,7 @@
 from db_oracle.connect import get_connection
 from model.models import TaskF, ThemesF, ResultF, ResultFullF, ResultList
 from flask import redirect, url_for, request, g
-import config as cfg
+from main_app import log, cfg
 import cx_Oracle
 
 
@@ -10,14 +10,21 @@ def programs():
         print('Programs List ...')
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select id_task, coalesce(period_for_testing,0) period_for_testing, category, ' \
-          'language, name_task ' \
+    cmd = 'select id_task, language, name_task ' \
           'from pdd_testing.tasks order by 1 desc'
-    cursor.execute(cmd)
-    cursor.rowfactory = TaskF
-    if cfg.debug_level > 3:
-        print('List programs have got...')
-    return cursor
+    records = []
+    try:
+        cursor.execute(cmd)
+        cursor.rowfactory = TaskF
+        rows = cursor.fetchall()
+    finally:
+        cursor.close()
+        con.close()
+    for row in rows:
+        rec = {'id_task': row.id_task, 'language': row.language, 'name_task': row.name_task}
+        records.append(rec)
+    rows.clear()
+    return records
 
 
 def program(id_task):
@@ -25,27 +32,47 @@ def program(id_task):
         print('Programs List ...')
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select id_task, coalesce(period_for_testing,0) period_for_testing, ' \
-          'category, language, name_task ' \
+    cmd = 'select id_task, language, name_task ' \
           'from pdd_testing.tasks t ' \
           'where t.id_task=:id ' \
           'order by 1 desc'
-    cursor.execute(cmd, [id_task])
-    cursor.rowfactory = TaskF
-    if cfg.debug_level > 3:
-        print('List programs have got...')
-    return cursor
+    records = []
+    try:
+        cursor.execute(cmd, [id_task])
+        cursor.rowfactory = TaskF
+        rows = cursor.fetchall()
+    finally:
+        cursor.close()
+        con.close()
+    for row in rows:
+        rec = {'id_task': row.id_task, 'language': row.language, 'name_task': row.name_task}
+        records.append(rec)
+    rows.clear()
+    return records
 
 
-def program_upd(id_task, period_for_testing, category, language, name_task):
-    if cfg.debug_level > 0:
-        print("1.+++ History Create " + name_task + " : ")
+def program_upd(id_task, language, name_task):
     try:
         con = get_connection()
         cursor = con.cursor()
-        cursor.callproc('admin.program_upd', [id_task, period_for_testing, category, language, name_task])
+        cursor.callproc('admin.program_upd', [id_task, language, name_task])
+        if cfg.debug_level > 2:
+            log.debug("2. Успешное завершение обновление программы!")
+    except cx_Oracle.IntegrityError as e:
+        errorObj, = e.args
+        print("Error Code:", errorObj.code)
+        print("Error Message:", errorObj.message)
+    finally:
         cursor.close()
         con.close()
+    return
+
+
+def program_add(lang, name_task):
+    try:
+        con = get_connection()
+        cursor = con.cursor()
+        cursor.callproc('admin.program_add', [lang, name_task])
         if cfg.debug_level > 0:
             print("2. Успешное завершение добавления программы!")
     except cx_Oracle.IntegrityError as e:
@@ -53,37 +80,16 @@ def program_upd(id_task, period_for_testing, category, language, name_task):
         print("Error Code:", errorObj.code)
         print("Error Message:", errorObj.message)
         print("При добавлении программы произошла ошибка")
-        return
-
-
-def program_add(period_for_testing, name_task):
-    if cfg.debug_level > 0:
-        print("1.+++ History Create " + name_task + " : " + period_for_testing)
-    try:
-        con = get_connection()
-        cursor = con.cursor()
-        cursor.callproc('admin.program_add', [period_for_testing, name_task])
+    finally:
         cursor.close()
         con.close()
-        if cfg.debug_level > 0:
-            print("2. Успешное завершение добавления программы!")
-    except cx_Oracle.IntegrityError as e:
-        errorObj, = e.args
-        print("Error Code:", errorObj.code)
-        print("Error Message:", errorObj.message)
-        print("При добавлении программы произошла ошибка")
-        return
 
 
 def get_name_program(id_task):
-    if cfg.debug_level > 3:
-        print("Get Name Program " + str(id_task))
     try:
         con = get_connection()
         cursor = con.cursor()
         mess = cursor.callfunc('admin.get_name_program', str, [id_task])
-        cursor.close()
-        con.close()
         if cfg.debug_level > 3:
             print("2. Успешное завершение добавления программы!")
         return mess
@@ -92,30 +98,30 @@ def get_name_program(id_task):
         print("Error Code:", errorObj.code)
         print("Error Message:", errorObj.message)
         print("При добавлении программы произошла ошибка")
-        return
+    finally:
+        cursor.close()
+        con.close()
+        return ''
 
 
 def program_delete(id_task):
-    if cfg.debug_level > 2:
-        print("program_delete. id_task " + str(id_task))
     try:
         con = get_connection()
         cursor = con.cursor()
         cursor.callproc('admin.program_delete', [id_task])
-        cursor.close()
-        con.close()
-        return
+        if cfg.debug_level > 3:
+            print("2. Успешное удаление программы. ID_TASK: " + str(id_task))
     except cx_Oracle.IntegrityError as e:
         errorObj, = e.args
         print("Error Code:", errorObj.code)
         print("Error Message:", errorObj.message)
         print("Произошла ошибка при удалении Программы: " + str(id_task))
-        return
+    finally:
+        cursor.close()
+        con.close()
 
 
 def themes(id_task):
-    if cfg.debug_level > 2:
-        print('History Detail id_hist: '+str(id_task))
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select th.id_task, th.id_theme, th.theme_number, th.count_question, th.count_success, ' \
@@ -149,23 +155,27 @@ def theme(id_task, id_theme):
 
 
 def theme_update(id_task, id_theme, theme_name, theme_number, count_question, count_success):
-    if cfg.debug_level > 2:
-        print('Theme update. id_task: ' + str(id_task) + ', id_theme' + str(id_theme))
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc("admin.theme_update", [id_task, id_theme, theme_name, theme_number, count_question, count_success])
-    cursor.close()
-    con.close()
+    try:
+        cursor.callproc("admin.theme_update", [id_task, id_theme, theme_name, theme_number, count_question, count_success])
+        if cfg.debug_level > 2:
+            print('Theme updated. id_task: ' + str(id_task) + ', id_theme' + str(id_theme))
+    finally:
+        cursor.close()
+        con.close()
 
 
 def theme_delete(id_theme):
-    if cfg.debug_level > 2:
-        print('Theme delete. id_theme' + str(id_theme))
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc("admin.theme_delete", [id_theme])
-    cursor.close()
-    con.close()
+    try:
+        cursor.callproc("admin.theme_delete", [id_theme])
+        if cfg.debug_level > 2:
+            print('Theme deleted. id_theme' + str(id_theme))
+    finally:
+        cursor.close()
+        con.close()
 
 
 def get_result_info():
@@ -178,8 +188,13 @@ def get_result_info():
     time_beg = cursor.var(cx_Oracle.DB_TYPE_DATE)
     time_end = cursor.var(cx_Oracle.DB_TYPE_DATE)
     fio = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
-    cursor.callproc('test.get_personal_info', (g.user.id_user, id_reg, iin, time_beg, time_end, fio))
-    print('Got result info ' + fio.getvalue())
+    try:
+        cursor.callproc('test.get_personal_info', (g.user.id_user, id_reg, iin, time_beg, time_end, fio))
+        if cfg.debug_level > 2:
+            print('Got result info ' + fio.getvalue())
+    finally:
+        con.close()
+        cursor.close()
     return id_reg.getvalue(), iin.getvalue(), time_beg.getvalue(), time_end.getvalue(), fio.getvalue()
 
 
@@ -192,13 +207,17 @@ def get_result_info(id_reg):
     time_beg = cursor.var(cx_Oracle.DB_TYPE_DATE)
     time_end = cursor.var(cx_Oracle.DB_TYPE_DATE)
     fio = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
-    cursor.callproc('test.get_personal_info', (id_reg, iin, time_beg, time_end, fio))
-    if cfg.debug_level > 1 and iin.getvalue() != '':
-        print('Got result info ' + str(iin.getvalue()))
-    if iin != '':
-        return id_reg, iin.getvalue(), time_beg.getvalue(), time_end.getvalue(), fio.getvalue()
-    else:
+    try:
+        cursor.callproc('test.get_personal_info', (id_reg, iin, time_beg, time_end, fio))
+        if cfg.debug_level > 1 and iin.getvalue() != '':
+            print('Got result info ' + str(iin.getvalue()))
+    finally:
+        con.close()
+        cursor.close()
+    if not iin:
         return id_reg, '', '', '', ''
+    else:
+        return id_reg, iin.getvalue(), time_beg.getvalue(), time_end.getvalue(), fio.getvalue()
 
 
 def get_result(id_registration):
@@ -318,6 +337,8 @@ def get_full_result(id_registration):
           "and   qft.id_question=q.id_question " \
           "and   a.id_answer=qft.id_answer " \
           "order by tft.theme_number, qft.order_num_question"
-    cursor.execute(cmd, [id_registration])
-    cursor.rowfactory = ResultFullF
-    return cursor
+    try:
+        cursor.execute(cmd, [id_registration])
+        cursor.rowfactory = ResultFullF
+    finally:
+        return cursor

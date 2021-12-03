@@ -32,15 +32,22 @@ class User:
         id_user = cursor.var(cx_Oracle.DB_TYPE_NUMBER)
         id_center = cursor.var(cx_Oracle.DB_TYPE_NUMBER)
         self.ip_addr = request.remote_addr
-        cursor.callproc('cop.login_admin', (username, password, self.ip_addr, id_user, id_center))
         self.username = username
-        self.password = password.getvalue()
-        self.id_user = int(id_user.getvalue())
-        self.id_center = int(id_center.getvalue())
-        log.info('LM. Get User By Name: ' + str(self.username) + ' : ' + ' : ' + str(self.password))
-        self.get_roles(cursor)
-        cursor.close()
-        conn.close()
+        try:
+            cursor.callproc('cop.login_admin', (username, password, self.ip_addr, id_user, id_center))
+            self.id_user = int(id_user.getvalue())
+            if self.id_user > 0:
+                self.get_roles(cursor)
+                if self.have_role('admin'):
+                    self.password = password.getvalue()
+                    self.id_center = int(id_center.getvalue())
+                    log.info('LM. Get User By Name: ' + str(self.username) + ' : ' + str(self.password) +
+                             ' : ' + self.ip_addr)
+                else:
+                    log.warning('LM. ID_USER: ' + str(self.id_user) + ' is not ADMINISTRATOR')
+        finally:
+            cursor.close()
+            conn.close()
         if not self.password:
             return None
         else:
@@ -58,7 +65,7 @@ class User:
 
     def get_roles(self, cursor):
         if cfg.debug_level > 1:
-            print("---- User. Get roles for: " + str(self.username))
+            print("LM. Get Roles for: " + str(self.username) + ', id_user: ' + str(self.id_user))
         cursor.execute("select r.name from roles r, users u, users_roles us " +
                        "where u.id_user=us.id_user " +
                        "and   r.id_role=us.id_role " +
@@ -67,10 +74,6 @@ class User:
         for record in cursor:
             for list_val in record:
                 self.roles.extend([list_val])
-        if cfg.debug_level > 1:
-            cnt = 1
-            for role in self.roles:
-                print("---- " + str(cnt) + ". Role: " + role)
 
     def have_role(self, role_name):
         return role_name in self.roles

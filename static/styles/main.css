@@ -99,3 +99,35 @@ a[href^='/language'], header a[href^='/log'] {
     padding-right: 5px;
     text-decoration: none;
 }
+.role-container {
+    min-height: 100%;
+    display: grid;
+    grid-template-columns: 10fr 10fr;
+    grid-template-rows: 30px auto;
+    grid-gap: 2px;
+    grid-template-areas: "role_header_all role_header_selected"
+                         "role_all role_selected";
+}
+.role_header_all {
+    padding: 10px 5px;
+    color: black;
+    align-items: center;
+    grid-area: role_header_all;  /* задаем имя элемента */
+}
+.role_header_selected {
+    padding: 10px 5px;
+    color: black;
+    align-items: center;
+    grid-area: role_header_selected;  /* задаем имя элемента */
+}
+.role_all {
+    color: black;
+    align-items: center;
+    grid-area: role_all;  /* задаем имя элемента */
+}
+
+.role_selected {
+    color: black;
+    align-items: center;
+    grid-area: role_selected;  /* задаем имя элемента */
+}

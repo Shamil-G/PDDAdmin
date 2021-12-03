@@ -1,14 +1,18 @@
 import logging
 import logging.config
 import config as cfg
+import sys
 
 
 def init_logger():
-    logger = logging.getLogger('PDD')
+    logger = logging.getLogger('PDD-ADMIN')
+    # logging.getLogger('PDD').addHandler(logging.StreamHandler(sys.stdout))
+    # Console
+    logging.getLogger('PDD-ADMIN').addHandler(logging.StreamHandler())
     if cfg.debug:
         logger.setLevel(logging.DEBUG)
     else:
-        logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.INFO)
     fh = logging.FileHandler(cfg.LOG_FILE, encoding="UTF-8")
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)

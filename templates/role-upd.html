@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('UPD_ROLE') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1 class="title">{{ res_value('UPD_ROLE') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_history_create" method="POST">
+<!--<form class="form_register" method="POST">-->
+    <table>
+       <tbody>
+            <tr>
+                <td><p class="title2">{{ res_value('NAME_ROLE') }}</p></td>
+                <td><input type="text" size="20" maxlength="20" style="width: 10%" name="name_role"><br></td>
+            </tr>
+            <tr>
+                <td><p class="title2">{{ res_value('FULL_NAME_ROLE') }}</p></td>
+                <td><input type="text" size="96" maxlength="256" style="width: 100%" name="full_name_role"><br></td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="submit" class="bt save" value="{{ res_value('SAVE') }}">
+</form>
+{% endblock %}

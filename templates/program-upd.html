@@ -15,14 +15,6 @@
        <tbody>
        {%  for el in cursor %}
             <tr>
-                <td><p class="title2">{{ res_value('CATEGORY') }}</p></td>
-                <td><input type="text" size="5" maxlength="5" style="width: 10%" name="category" value="{{ el.category }}"><br></td>
-            </tr>
-            <tr>
-                <td><p class="title2">{{ res_value('PERIOD_FOR_TESTING') }}</p></td>
-                <td><input type="text" size="5" maxlength="5" style="width: 10%" name="period_for_testing" value="{{ el.period_for_testing }}"><br></td>
-            </tr>
-            <tr>
                 <td><p class="title2">{{ res_value('TESTING_LANGUAGE') }}</p></td>
                 <td><input type="text" size="2" maxlength="5" style="width: 10%" name="language" value="{{ el.language }}"><br></td>
             </tr>
