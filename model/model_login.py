@@ -40,6 +40,11 @@ def all_roles():
             role = {'id_role': row.id_role, 'active': row.active, 'name': row.name, 'full_name': row.full_name}
             roles.append(role)
         rows.clear()
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error('ERROR. ALL ROLES')
+        log.error(f'Error Code: {error.code}')
+        log.error(f'Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -64,6 +69,11 @@ def role_users(id_role):
             log.debug('REC: ' + str(role))
             roles.append(role)
         rows.clear()
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error(f'ERROR. ROLE USERS. id_role: {id_role}')
+        log.error(f'Error Code: {error.code}')
+        log.error(f'Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -84,6 +94,11 @@ def all_users():
             user = {'id_user': row.id_user, 'username': row.username, 'fio': row.fio, 'descr': row.descr}
             users.append(user)
         rows.clear()
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error(f'ERROR. ALL USERS')
+        log.error(f'Error Code: {error.code}')
+        log.error(f'Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -95,6 +110,11 @@ def role_delete(id_role):
     cursor = con.cursor()
     try:
         cursor.callproc('pdd_testing.admin.role_delete', [id_role])
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error(f'ERROR. ROLE DEL. id_role: {id_role}')
+        log.error(f'Error Code: {error.code}')
+        log.error(f'Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -105,6 +125,11 @@ def role_add(name, full_name):
     cursor = con.cursor()
     try:
         cursor.callproc('pdd_testing.admin.role_add', [name, full_name])
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error(f'ERROR. ROLE ADD. name: {name}, full_name: {full_name}')
+        log.error(f'Error Code: {error.code}')
+        log.error(f'Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -115,6 +140,11 @@ def role_upd(id_role, name, full_name):
     cursor = con.cursor()
     try:
         cursor.callproc('pdd_testing.admin.role_upd', [id_role, name, full_name])
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error(f'ERROR. ROLE UPD. id_role: {id_role}, name: {name} ')
+        log.error(f'Error Code: {error.code}')
+        log.error(f'Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -125,6 +155,11 @@ def role_user_add(id_role, id_user):
     cursor = con.cursor()
     try:
         cursor.callproc('pdd_testing.admin.role_assign', [id_role, id_user])
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error(f'ERROR. ROLE USER ADD. id_role: {id_role}, id_user: {id_user} ')
+        log.error(f'Error Code: {error.code}')
+        log.error(f'Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -135,6 +170,11 @@ def role_user_del(id_role, id_user):
     cursor = con.cursor()
     try:
         cursor.callproc('pdd_testing.admin.role_remove', [id_role, id_user])
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error(f'ERROR. ROLE USER DEL. id_role: {id_role}, id_user: {id_user} ')
+        log.error(f'Error Code: {error.code}')
+        log.error(f'Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -150,8 +190,9 @@ def authority():
             if user.is_authenticated():
                 login_user(user)
     except Exception as e:
-        errorObj, = e.args
-        log.debug("Error Code:", errorObj.code)
-        log.debug("Error Message:", errorObj.message)
+        error, = e.args
+        log.debug(f"Error Authority: {session['username']}")
+        log.debug(f"Error Code: {error.code}")
+        log.debug(f"Error Message: {error.message}")
         return redirect("/")
     return redirect(url_for('login_page_fc'))

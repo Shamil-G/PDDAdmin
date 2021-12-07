@@ -169,7 +169,7 @@ def view_role_add():
 @app.route('/role-detail/<int:id_role>', methods=['POST', 'GET'])
 def view_role_upd(id_role):
     if cfg.debug_level > 1:
-        print("Добавляем программу !")
+        print("Обновляем роль!")
     if request.method == "POST":
         try:
             name = request.form['name_role']

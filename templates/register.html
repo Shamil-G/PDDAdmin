@@ -35,7 +35,28 @@
             <td><input class="form_password" type="password" name="password2"></td>
         </tr>
         <tr>
-        <td><input class="bt register" type="submit" value="{{ res_value('REGISTER') }}"></td>
+            <td><a>{{ res_value('IIN') }}</a></td>
+            <td><input class="iin" type="text" name="iin" minlength="12" maxlength="12" pattern="[0-9]{12}"></td>
+        </tr>
+        <tr>
+            <td><a>{{ res_value('FIRST_NAME') }}</a></td>
+            <td><input class="form_username" type="text" name="first_name"></td>
+        </tr>
+        <tr>
+            <td><a>{{ res_value('LAST_NAME') }}</a></td>
+            <td><input class="form_username" type="text" name="last_name"></td>
+        </tr>
+        <tr>
+            <td><a>{{ res_value('MIDDLE_NAME') }}</a></td>
+            <td><input class="form_username" type="text" name="middle_name"></td>
+        </tr>
+        <tr>
+            <td><a>{{ res_value('POST_DESCRIPTION') }}</a></td>
+            <td><input class="description" type="text" name="description"></td>
+        </tr>
+
+        <tr>
+            <td><input class="bt register" type="submit" value="{{ res_value('REGISTER') }}"></td>
         </tr>
     </table>
 </form>

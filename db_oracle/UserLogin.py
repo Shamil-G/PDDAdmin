@@ -41,10 +41,10 @@ class User:
                 if self.have_role('admin'):
                     self.password = password.getvalue()
                     self.id_center = int(id_center.getvalue())
-                    log.info('LM. Get User By Name: ' + str(self.username) + ' : ' + str(self.password) +
-                             ' : ' + self.ip_addr)
+                    log.info(f'LM. Get User By Name. username: {self.username}, id_center: {self.id_center}, '
+                             f'password {self.password}, ip: {self.ip_addr}')
                 else:
-                    log.warning('LM. ID_USER: ' + str(self.id_user) + ' is not ADMINISTRATOR')
+                    log.warning(f'LM. Get User By Name. {self.username} is not ADMINISTRATOR')
         finally:
             cursor.close()
             conn.close()
@@ -53,14 +53,23 @@ class User:
         else:
             return self
 
-    def new_user(i_username, i_password):
+    def new_user(i_username, i_password, iin, first_name, last_name, middle_name, description):
         hash_pwd = generate_password_hash(i_password)
         con = get_connection()
         cursor = con.cursor()
         message = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
-        cursor.callproc('cop.new_user2', [i_username, hash_pwd, int(g.user.id_user), message])
-        cursor.close()
-        con.close()
+        print(f'LM. NEW USER. {i_username} {i_password} {iin} {first_name} {description}')
+        try:
+            cursor.callproc('cop.new_user2', [i_username, hash_pwd, int(g.user.id_user), iin,
+                            first_name, last_name, middle_name, description, message])
+        except cx_Oracle.DatabaseError as e:
+            error, = e.args
+            log.error('ERROR. ALL ROLES')
+            log.error(f'Error Code: {error.code}')
+            log.error(f'Error Message: {error.message}')
+        finally:
+            cursor.close()
+            con.close()
         return message.getvalue()
 
     def get_roles(self, cursor):
@@ -103,7 +112,7 @@ class User:
 @login_manager.user_loader
 def loader_user(username):
     if cfg.debug_level > 0:
-        print("LoginManager.user_load: " + str(username))
+        print(f"LM. LOADER USER: {username}")
     return User().get_user_by_name(username)
 
 
@@ -137,9 +146,8 @@ def login_page():
             print("1. Login Page. username: "+str(username)+" : "+str(user_password))
         if username and user_password:
             user = User().get_user_by_name(username)
-            user = User().get_user_by_name(username)
             # if user is not None and check_password_hash(user.password, user_password):
-            if user is not None:
+            if not user.is_anonymous():
                 # Принудительно обновляем базовый шаблон
                 render_template("base.html")
                 login_user(user)
@@ -158,12 +166,17 @@ def login_page():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if 'Operator DASORP' in g.user.roles or \
-            'Admin' in g.user.roles:
+    if 'admin' in g.user.roles:
         if request.method == 'POST':
             username = request.form.get('username')
             password = request.form.get('password')
             password2 = request.form.get('password2')
+            iin = request.form.get('iin')
+            first_name = request.form.get('first_name')
+            last_name = request.form.get('last_name')
+            middle_name = request.form.get('middle_name')
+            description = request.form.get('description')
+
             if cfg.debug_level > 0:
                 print("/register. username: " + str(username))
             if not (username and password and password2):
@@ -172,13 +185,14 @@ def register():
             elif password != password2:
                 flash('Пароли не совпадают')
                 return redirect(url_for('register'))
-
-            message = User.new_user(username, password)
+            log.info(f'REGISTER. {username} {password} {iin} {first_name} {description}')
+            print(f'REGISTER. {username} {password} {iin} {first_name} {description}')
+            message = User.new_user(username, password, iin, first_name, last_name, middle_name, description)
             if message:
                 flash(message)
                 return render_template('register.html')
             else:
-                return redirect(url_for('login_page'))
+                return redirect(url_for('view_programs'))
 
         flash("Введите имя и пароль два раза")
     return render_template('register.html')

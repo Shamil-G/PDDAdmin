@@ -1,13 +1,14 @@
 set echo on
+#python -m install virtualenv
 python -m venv venv
-E:\PDDAdmin\venv\Scripts\activate.bat
-E:\PDDAdmin\venv\Scripts\python.exe -m pip install --upgrade pip
-E:\PDDAdmin\venv\Scripts\pip install flask
+C:\Shamil\PDDAdmin\venv\Scripts\activate.bat
+C:\Shamil\PDDAdmin\venv\Scripts\python.exe -m pip install --upgrade pip
+C:\Shamil\PDDAdmin\venv\Scripts\pip install flask
 pip install flask_login
 pip install flask_sqlalchemy
 pip install cx_Oracle
 pip install xlsxwriter
 pip install openpyxl
 pip install scikit-build
-pip install opencv-python
-python3 main_app.py
+pip install requests
+python main_app.py
