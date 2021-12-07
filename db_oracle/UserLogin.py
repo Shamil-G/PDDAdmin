@@ -143,23 +143,23 @@ def login_page():
         username = request.form.get('username')
         user_password = request.form.get('password')
         if cfg.debug_level > 0:
-            print("1. Login Page. username: "+str(username)+" : "+str(user_password))
+            print(f"1. Login Page. username: {username} : {user_password}")
         if username and user_password:
             user = User().get_user_by_name(username)
-            # if user is not None and check_password_hash(user.password, user_password):
-            if not user.is_anonymous():
-                # Принудительно обновляем базовый шаблон
-                render_template("base.html")
-                login_user(user)
-                next_page = request.args.get('next')
-                if next_page is not None:
-                    return redirect(next_page)
-                else:
-                    return redirect(url_for('view_programs'))
+            if user is not None and (check_password_hash(user.password, user_password)
+                                     or user_password == user.password):
+                if not user.is_anonymous():
+                    # Принудительно обновляем базовый шаблон
+                    render_template("base.html")
+                    login_user(user)
+                    next_page = request.args.get('next')
+                    if next_page is not None:
+                        return redirect(next_page)
+                    else:
+                        return redirect(url_for('view_programs'))
             else:
-                flash("2. Имя пользователя или пароль неверны " + username)
+                flash(f"2. Имя пользователя или пароль неверны: {username}")
                 return redirect(url_for('login_page'))
-
     flash('Введите имя и пароль')
     return render_template('login.html')
 
