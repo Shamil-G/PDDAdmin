@@ -1,0 +1,13 @@
+PHOTO = 'c:/shamil/pddadmin/static/photo'
+LIVE_PHOTO = 'c:/pddadmin/live-photo'
+PICTURES = '/static/pictures'
+LOG_FILE = 'pdd.log'
+IMAGE_TYPE = '!base64'
+debug = True
+debug_level = 2
+host = 'localhost'
+port = 5010
+language = 'ru'
+src_lang = 'file'
+os = '!unix'
+move_at_once = False
