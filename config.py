@@ -1,8 +1,4 @@
-PHOTO = 'c:/shamil/pddadmin/static/photo'
-LIVE_PHOTO = 'c:/pddadmin/live-photo'
-PICTURES = '/static/pictures'
-LOG_FILE = 'pdd.log'
-IMAGE_TYPE = '!base64'
+LOG_FILE = 'pdd-admin.log'
 debug = True
 debug_level = 2
 host = 'localhost'
