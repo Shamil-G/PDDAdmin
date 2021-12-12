@@ -1,0 +1,8 @@
+config.py
+__init__.py.*
+__init__.pyc
+.idea/
+/venv/
+/upload_files/
+/reports/spool/
+*__pycache__/
