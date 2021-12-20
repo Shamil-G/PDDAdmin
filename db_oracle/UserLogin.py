@@ -34,7 +34,7 @@ class User:
         self.ip_addr = request.remote_addr
         self.username = username
         try:
-            cursor.callproc('cop.login_admin', (username, password, self.ip_addr, id_user, id_center))
+            cursor.callproc('cop.cop.login_center_admin', (username, password, self.ip_addr, id_user, id_center))
             self.id_user = int(id_user.getvalue())
             if self.id_user > 0:
                 self.get_roles(cursor)
@@ -60,7 +60,7 @@ class User:
         message = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
         print(f'LM. NEW USER. {i_username} {i_password} {iin} {first_name} {description}')
         try:
-            cursor.callproc('cop.new_user2', [i_username, hash_pwd, int(g.user.id_user), iin,
+            cursor.callproc('cop.cop.new_user2', [i_username, hash_pwd, int(g.user.id_user), iin,
                             first_name, last_name, middle_name, description, message])
         except cx_Oracle.DatabaseError as e:
             error, = e.args
@@ -75,7 +75,7 @@ class User:
     def get_roles(self, cursor):
         if cfg.debug_level > 1:
             print("LM. Get Roles for: " + str(self.username) + ', id_user: ' + str(self.id_user))
-        cursor.execute("select r.name from roles r, users u, users_roles us " +
+        cursor.execute("select r.name from cop.roles r, cop.users u, cop.users_roles us " +
                        "where u.id_user=us.id_user " +
                        "and   r.id_role=us.id_role " +
                        "and u.id_user=:uid_user", uid_user=self.id_user)

@@ -42,7 +42,7 @@ def regions():
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_region, active, date_op, region_name_ru name_ru, region_name_kz name_kz ' \
-          'from pdd_testing.regions t ' \
+          'from cop.regions t ' \
           'order by 1'
     cursor.execute(cmd)
     cursor.rowfactory = RegionF
@@ -61,7 +61,7 @@ def region(id_region):
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_region, active, date_op, region_name_ru name_ru, region_name_kz name_kz ' \
-          'from pdd_testing.regions t ' \
+          'from cop.regions t ' \
           'where t.id_region = :p1 ' \
           'order by 1'
     cursor.execute(cmd, [id_region])
@@ -84,7 +84,7 @@ def centers(id_region):
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_center, id_region, active, date_op, code_center, name_short_ru, name_short_kz, name_ru, name_kz ' \
-          'from pdd_testing.centers c ' \
+          'from cop.centers c ' \
           'where c.id_region = :p1 ' \
           'order by 1'
     cursor.execute(cmd, [id_region])
@@ -106,7 +106,7 @@ def center(id_center):
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_center, id_region, active, date_op, code_center, name_short_ru, name_short_kz, name_ru, name_kz ' \
-          'from pdd_testing.centers c ' \
+          'from cop.centers c ' \
           'where c.id_center = :p1 ' \
           'order by 1'
     cursor.execute(cmd, [id_center])
@@ -130,7 +130,7 @@ def list_workstations(code_center):
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_pc, code_center, active, date_op, ip_addr, mac, status ' \
-          'from pdd_testing.list_workstation c ' \
+          'from cop.list_workstation c ' \
           'where c.code_center = :p1 ' \
           'order by ip_addr'
     cursor.execute(cmd, [code_center])
@@ -152,7 +152,7 @@ def workstation(id_pc):
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_pc, code_center, active, date_op, ip_addr, mac, status ' \
-          'from pdd_testing.list_workstation c ' \
+          'from cop.list_workstation c ' \
           'where c.id_pc = :p1 ' \
           'order by ip_addr'
     cursor.execute(cmd, [id_pc])
@@ -173,7 +173,7 @@ def region_add(name_ru, name_kz):
         print('Region Add ...' + name_ru)
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.region_add', [name_ru, name_kz])
+    cursor.callproc('cop.admin.region_add', [name_ru, name_kz])
     cursor.close()
     con.close()
 
@@ -183,7 +183,7 @@ def region_upd(id_region, name_ru, name_kz):
         print('Region UPD ... id_region: ' + str(id_region) + ', name_ru: ' + name_ru + ', name_kz: ' + name_kz)
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.region_upd', [int(id_region), name_ru, name_kz])
+    cursor.callproc('cop.admin.region_upd', [int(id_region), name_ru, name_kz])
     cursor.close()
     con.close()
 
@@ -191,7 +191,7 @@ def region_upd(id_region, name_ru, name_kz):
 def region_del(id_region):
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.region_del', [id_region])
+    cursor.callproc('cop.admin.region_del', [id_region])
     cursor.close()
     con.close()
 
@@ -201,7 +201,7 @@ def center_add(id_region, code_center, name_short_ru, name_short_kz, name_ru, na
         print('Workstation UPD ...' + code_center)
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.center_add',
+    cursor.callproc('cop.admin.center_add',
                     [id_region, code_center, name_short_ru, name_short_kz, name_ru, name_kz])
     cursor.close()
     con.close()
@@ -210,7 +210,7 @@ def center_add(id_region, code_center, name_short_ru, name_short_kz, name_ru, na
 def center_upd(id_center, code_center, name_short_ru, name_short_kz, name_ru, name_kz):
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.center_upd',
+    cursor.callproc('cop.admin.center_upd',
                     [id_center, code_center, name_short_ru, name_short_kz, name_ru, name_kz])
     cursor.close()
     con.close()
@@ -221,7 +221,7 @@ def center_del(id_center):
         print('Workstation Del ...' + str(id_center))
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.center_del', [id_center])
+    cursor.callproc('cop.admin.center_del', [id_center])
     cursor.close()
     con.close()
 
@@ -231,7 +231,7 @@ def workstation_add(code_center, ip_addr, mac):
         print('Workstation UPD ...' + code_center)
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.workstation_add', [code_center, ip_addr, mac])
+    cursor.callproc('cop.admin.workstation_add', [code_center, ip_addr, mac])
     cursor.close()
     con.close()
 
@@ -241,7 +241,7 @@ def workstation_upd(id_pc, ip_addr, mac):
         print('Workstation UPD ...' + str(id_pc))
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.workstation_upd', [id_pc, ip_addr, mac])
+    cursor.callproc('cop.admin.workstation_upd', [id_pc, ip_addr, mac])
     cursor.close()
     con.close()
 
@@ -251,7 +251,7 @@ def workstation_del(id_pc):
         print('Workstation Del ...' + str(id_pc))
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.workstation_del', [id_pc])
+    cursor.callproc('cop.admin.workstation_del', [id_pc])
     cursor.close()
     con.close()
 
@@ -261,6 +261,6 @@ def workstation_stat(id_pc):
         print('Workstation Status ...' + str(id_pc))
     con = get_connection()
     cursor = con.cursor()
-    cursor.callproc('pdd_testing.admin.workstation_stat', [id_pc])
+    cursor.callproc('cop.admin.workstation_stat', [id_pc])
     cursor.close()
     con.close()

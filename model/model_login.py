@@ -30,7 +30,7 @@ class UsersF(object):
 def all_roles():
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select id_role, active, name, full_name from roles order by id_role'
+    cmd = 'select id_role, active, name, full_name from cop.roles order by id_role'
     roles = []
     try:
         cursor.execute(cmd)
@@ -55,7 +55,7 @@ def role_users(id_role):
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select u.id_user, u.username, u.name||\' \'||u.lastname||\' \'||u.lastname as fio, u.descr ' \
-          'from roles r, users_roles ur, users u ' \
+          'from cop.roles r, cop.users_roles ur, cop.users u ' \
           'where r.id_role=ur.id_role ' \
           'and   ur.id_user = u.id_user ' \
           'and   r.id_role = :id_role'
@@ -84,7 +84,7 @@ def all_users():
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select u.id_user, u.username, u.name||\' \'||u.lastname||\' \'||u.lastname as fio, u.descr ' \
-          'from users u '
+          'from cop.users u '
     users = []
     try:
         cursor.execute(cmd)
@@ -109,7 +109,7 @@ def role_delete(id_role):
     con = get_connection()
     cursor = con.cursor()
     try:
-        cursor.callproc('pdd_testing.admin.role_delete', [id_role])
+        cursor.callproc('cop.admin.role_delete', [id_role])
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE DEL. id_role: {id_role}')
@@ -124,7 +124,7 @@ def role_add(name, full_name):
     con = get_connection()
     cursor = con.cursor()
     try:
-        cursor.callproc('pdd_testing.admin.role_add', [name, full_name])
+        cursor.callproc('cop.admin.role_add', [name, full_name])
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE ADD. name: {name}, full_name: {full_name}')
@@ -139,7 +139,7 @@ def role_upd(id_role, name, full_name):
     con = get_connection()
     cursor = con.cursor()
     try:
-        cursor.callproc('pdd_testing.admin.role_upd', [id_role, name, full_name])
+        cursor.callproc('cop.admin.role_upd', [id_role, name, full_name])
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE UPD. id_role: {id_role}, name: {name} ')
@@ -154,7 +154,7 @@ def role_user_add(id_role, id_user):
     con = get_connection()
     cursor = con.cursor()
     try:
-        cursor.callproc('pdd_testing.admin.role_assign', [id_role, id_user])
+        cursor.callproc('cop.admin.role_assign', [id_role, id_user])
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE USER ADD. id_role: {id_role}, id_user: {id_user} ')
@@ -169,7 +169,7 @@ def role_user_del(id_role, id_user):
     con = get_connection()
     cursor = con.cursor()
     try:
-        cursor.callproc('pdd_testing.admin.role_remove', [id_role, id_user])
+        cursor.callproc('cop.admin.role_remove', [id_role, id_user])
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE USER DEL. id_role: {id_role}, id_user: {id_user} ')
