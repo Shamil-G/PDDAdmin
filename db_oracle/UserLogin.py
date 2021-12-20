@@ -73,16 +73,21 @@ class User:
         return message.getvalue()
 
     def get_roles(self, cursor):
-        if cfg.debug_level > 1:
+        my_var = cursor.var(cx_Oracle.CURSOR)
+        records = []
+        if cfg.debug_level > 2:
             print("LM. Get Roles for: " + str(self.username) + ', id_user: ' + str(self.id_user))
-        cursor.execute("select r.name from cop.roles r, cop.users u, cop.users_roles us " +
-                       "where u.id_user=us.id_user " +
-                       "and   r.id_role=us.id_role " +
-                       "and u.id_user=:uid_user", uid_user=self.id_user)
-        self.roles.clear()
-        for record in cursor:
-            for list_val in record:
-                self.roles.extend([list_val])
+        try:
+            cursor.callproc('cop.cop.get_roles', [self.id_user, my_var])
+            rows = my_var.getvalue().fetchall()
+            self.roles.clear()
+            for row in rows:
+                self.roles.extend([row[0]])
+        except cx_Oracle.DatabaseError as e:
+            error, = e.args
+            log.error('ERROR. GET ALL ROLES')
+        finally:
+            rows.clear()
 
     def have_role(self, role_name):
         return role_name in self.roles
