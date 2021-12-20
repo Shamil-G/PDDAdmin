@@ -1,6 +1,6 @@
-from __init__ import app
-import config as cfg
-from model.logger import log
+from __init__ import app, cfg, log
+
+
 #
 # Don't remove next lines 
 from view import routes

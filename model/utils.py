@@ -1,8 +1,8 @@
-from main_app import app
+from main_app import app, cfg
 from view.i18n import I18N
 from db_oracle.connect import get_connection
 from flask import send_from_directory, send_file, session, redirect, url_for, request
-import config as cfg
+
 
 i18n = I18N()
 

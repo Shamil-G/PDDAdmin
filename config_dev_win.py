@@ -1,4 +1,3 @@
-LOG_FILE = 'pdd-admin.log'
 debug = True
 debug_level = 2
 host = 'localhost'
@@ -6,4 +5,4 @@ port = 5010
 language = 'ru'
 src_lang = 'file'
 os = '!unix'
-move_at_once = False
+

@@ -1,6 +1,6 @@
 from typing import List, Any
 import os.path
-import config as cfg
+from main_app import cfg
 
 
 class I18N:

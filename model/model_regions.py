@@ -38,7 +38,7 @@ class WorkstationF(object):
 
 def regions():
     if cfg.debug_level > 3:
-        print('Programs List ...')
+        print('Regions List ...')
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_region, active, date_op, region_name_ru name_ru, region_name_kz name_kz ' \
@@ -71,8 +71,7 @@ def region(id_region):
     for row in rows:
         rec = {'id_region': row.id_region, 'name_ru': row.name_ru, 'name_kz': row.name_kz}
         results.append(rec)
-        print('---> rec: ' + str(rec))
-        print('-----> 1. rec: ' + rec['name_ru'])
+        print(f'---> rec: {rec}')
     cursor.close()
     con.close()
     return results
@@ -80,7 +79,7 @@ def region(id_region):
 
 def centers(id_region):
     if cfg.debug_level > 3:
-        print('Programs List ...')
+        print(f'Centers List. id_region: {id_region}')
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_center, id_region, active, date_op, code_center, name_short_ru, name_short_kz, name_ru, name_kz ' \
@@ -126,7 +125,7 @@ def center(id_center):
 
 def list_workstations(code_center):
     if cfg.debug_level > 3:
-        print('Programs List ...' + code_center)
+        print(f'Workstations List. code+center: {code_center}')
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_pc, code_center, active, date_op, ip_addr, mac, status ' \
@@ -147,8 +146,6 @@ def list_workstations(code_center):
 
 
 def workstation(id_pc):
-    if cfg.debug_level > 3:
-        print('Programs List ...' + str(id_pc))
     con = get_connection()
     cursor = con.cursor()
     cmd = 'select id_pc, code_center, active, date_op, ip_addr, mac, status ' \
@@ -170,7 +167,7 @@ def workstation(id_pc):
 
 def region_add(name_ru, name_kz):
     if cfg.debug_level > 3:
-        print('Region Add ...' + name_ru)
+        print(f'Region Add. name: {name_ru}')
     con = get_connection()
     cursor = con.cursor()
     cursor.callproc('cop.admin.region_add', [name_ru, name_kz])
@@ -180,7 +177,7 @@ def region_add(name_ru, name_kz):
 
 def region_upd(id_region, name_ru, name_kz):
     if cfg.debug_level > 2:
-        print('Region UPD ... id_region: ' + str(id_region) + ', name_ru: ' + name_ru + ', name_kz: ' + name_kz)
+        print(f'Region UPD. id_region: {id_region}, name_ru: {name_ru}, name_kz: {name_kz}')
     con = get_connection()
     cursor = con.cursor()
     cursor.callproc('cop.admin.region_upd', [int(id_region), name_ru, name_kz])
@@ -198,7 +195,7 @@ def region_del(id_region):
 
 def center_add(id_region, code_center, name_short_ru, name_short_kz, name_ru, name_kz):
     if cfg.debug_level > 3:
-        print('Workstation UPD ...' + code_center)
+        print(f'Workstation UPD. {code_center}')
     con = get_connection()
     cursor = con.cursor()
     cursor.callproc('cop.admin.center_add',
@@ -218,7 +215,7 @@ def center_upd(id_center, code_center, name_short_ru, name_short_kz, name_ru, na
 
 def center_del(id_center):
     if cfg.debug_level > 3:
-        print('Workstation Del ...' + str(id_center))
+        print(f'Workstation Del. id_center: {id_center}')
     con = get_connection()
     cursor = con.cursor()
     cursor.callproc('cop.admin.center_del', [id_center])
@@ -228,7 +225,7 @@ def center_del(id_center):
 
 def workstation_add(code_center, ip_addr, mac):
     if cfg.debug_level > 2:
-        print('Workstation UPD ...' + code_center)
+        print(f'Workstation ADD. code_center: {code_center}')
     con = get_connection()
     cursor = con.cursor()
     cursor.callproc('cop.admin.workstation_add', [code_center, ip_addr, mac])
@@ -238,7 +235,7 @@ def workstation_add(code_center, ip_addr, mac):
 
 def workstation_upd(id_pc, ip_addr, mac):
     if cfg.debug_level > 3:
-        print('Workstation UPD ...' + str(id_pc))
+        print(f'Workstation UPD. id_pc: {id_pc}')
     con = get_connection()
     cursor = con.cursor()
     cursor.callproc('cop.admin.workstation_upd', [id_pc, ip_addr, mac])
@@ -248,7 +245,7 @@ def workstation_upd(id_pc, ip_addr, mac):
 
 def workstation_del(id_pc):
     if cfg.debug_level > 3:
-        print('Workstation Del ...' + str(id_pc))
+        print(f'Workstation Del. id_pc: {id_pc}')
     con = get_connection()
     cursor = con.cursor()
     cursor.callproc('cop.admin.workstation_del', [id_pc])
@@ -258,7 +255,7 @@ def workstation_del(id_pc):
 
 def workstation_stat(id_pc):
     if cfg.debug_level > 3:
-        print('Workstation Status ...' + str(id_pc))
+        print(f'Workstation Status. id_pc: {id_pc}')
     con = get_connection()
     cursor = con.cursor()
     cursor.callproc('cop.admin.workstation_stat', [id_pc])

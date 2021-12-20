@@ -1,5 +1,5 @@
 from model.dml_models import get_result_by_date
-import config as cfg
+import main_app as cfg
 import xlsxwriter
 import datetime
 import os.path
