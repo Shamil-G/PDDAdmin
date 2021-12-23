@@ -30,50 +30,20 @@ class UsersF(object):
 def all_roles():
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select id_role, active, name, full_name from cop.roles order by id_role'
+    my_var = cursor.var(cx_Oracle.CURSOR)
     roles = []
     try:
-        cursor.execute(cmd)
-        cursor.rowfactory = RolesF
-        rows = cursor.fetchall()
+        cursor.callproc('cop.cop.all_roles', [my_var])
+        rows = my_var.getvalue().fetchall()
         for row in rows:
-            role = {'id_role': row.id_role, 'active': row.active, 'name': row.name, 'full_name': row.full_name}
+            role = {'id_role': row[0], 'active': row[1], 'name': row[2], 'full_name': row[3]}
+            log.info(f'id_role: {row[0]}, active: {row[1]}, name: {row[2]}, full_name: {row[3]}')
             roles.append(role)
         rows.clear()
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error('ERROR. ALL ROLES')
-        log.error(f'Error Code: {error.code}')
-        log.error(f'Error Message: {error.message}')
-    finally:
-        cursor.close()
-        con.close()
-    return roles
-
-
-def role_users(id_role):
-    con = get_connection()
-    cursor = con.cursor()
-    cmd = 'select u.id_user, u.username, u.name||\' \'||u.lastname||\' \'||u.lastname as fio, u.descr ' \
-          'from cop.roles r, cop.users_roles ur, cop.users u ' \
-          'where r.id_role=ur.id_role ' \
-          'and   ur.id_user = u.id_user ' \
-          'and   r.id_role = :id_role'
-    roles = []
-    try:
-        cursor.execute(cmd, [id_role])
-        cursor.rowfactory = UsersF
-        rows = cursor.fetchall()
-        for row in rows:
-            role = {'id_user': row.id_user, 'username': row.username, 'fio': row.fio, 'descr': row.descr}
-            log.debug('REC: ' + str(role))
-            roles.append(role)
-        rows.clear()
-    except cx_Oracle.DatabaseError as e:
-        error, = e.args
-        log.error(f'ERROR. ROLE USERS. id_role: {id_role}')
-        log.error(f'Error Code: {error.code}')
-        log.error(f'Error Message: {error.message}')
+        log.error(f'Error Code: {error.code}, Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -83,26 +53,45 @@ def role_users(id_role):
 def all_users():
     con = get_connection()
     cursor = con.cursor()
-    cmd = 'select u.id_user, u.username, u.name||\' \'||u.lastname||\' \'||u.lastname as fio, u.descr ' \
-          'from cop.users u '
+    my_var = cursor.var(cx_Oracle.CURSOR)
     users = []
     try:
-        cursor.execute(cmd)
-        cursor.rowfactory = UsersF
-        rows = cursor.fetchall()
+        cursor.callproc('cop.cop.all_users', [my_var])
+        rows = my_var.getvalue().fetchall()
         for row in rows:
-            user = {'id_user': row.id_user, 'username': row.username, 'fio': row.fio, 'descr': row.descr}
+            user = {'id_user': row[0], 'username': row[1], 'fio': row[2], 'descr': row[3]}
             users.append(user)
         rows.clear()
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ALL USERS')
-        log.error(f'Error Code: {error.code}')
-        log.error(f'Error Message: {error.message}')
+        log.error(f'Error Code: {error.code}, Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
     return users
+
+
+def role_users(id_role):
+    con = get_connection()
+    cursor = con.cursor()
+    my_var = cursor.var(cx_Oracle.CURSOR)
+    roles = []
+    try:
+        cursor.callproc('cop.cop.role_users', [id_role, my_var])
+        rows = my_var.getvalue().fetchall()
+        for row in rows:
+            role = {'id_user': row[0], 'username': row[1], 'fio': row[2], 'descr': row[3]}
+            roles.append(role)
+        rows.clear()
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error(f'ERROR. ROLE USERS. id_role: {id_role}')
+        log.error(f'Error Code: {error.code}, Error Message: {error.message}')
+    finally:
+        cursor.close()
+        con.close()
+    return roles
 
 
 def role_delete(id_role):
@@ -113,8 +102,7 @@ def role_delete(id_role):
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE DEL. id_role: {id_role}')
-        log.error(f'Error Code: {error.code}')
-        log.error(f'Error Message: {error.message}')
+        log.error(f'Error Code: {error.code}, Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -128,8 +116,7 @@ def role_add(name, full_name):
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE ADD. name: {name}, full_name: {full_name}')
-        log.error(f'Error Code: {error.code}')
-        log.error(f'Error Message: {error.message}')
+        log.error(f'Error Code: {error.code}, Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -143,8 +130,7 @@ def role_upd(id_role, name, full_name):
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE UPD. id_role: {id_role}, name: {name} ')
-        log.error(f'Error Code: {error.code}')
-        log.error(f'Error Message: {error.message}')
+        log.error(f'Error Code: {error.code}, Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -158,8 +144,7 @@ def role_user_add(id_role, id_user):
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE USER ADD. id_role: {id_role}, id_user: {id_user} ')
-        log.error(f'Error Code: {error.code}')
-        log.error(f'Error Message: {error.message}')
+        log.error(f'Error Code: {error.code}, Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
@@ -173,8 +158,7 @@ def role_user_del(id_role, id_user):
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         log.error(f'ERROR. ROLE USER DEL. id_role: {id_role}, id_user: {id_user} ')
-        log.error(f'Error Code: {error.code}')
-        log.error(f'Error Message: {error.message}')
+        log.error(f'Error Code: {error.code}, Error Message: {error.message}')
     finally:
         cursor.close()
         con.close()
