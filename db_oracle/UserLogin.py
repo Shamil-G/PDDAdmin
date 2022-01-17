@@ -7,7 +7,6 @@ from db_oracle.connect import get_connection
 from main_app import app, log, cfg
 
 
-
 login_manager = LoginManager(app)
 login_manager.login_view = 'login_page'
 if cfg.debug_level > 0:
@@ -25,7 +24,7 @@ class User:
     debug = False
 
     def get_user_by_name(self, username):
-        log.info('LM. Get User By Name: ' + str(username))
+        log.info(f'LM. Get User By Name: {username}, ip_addr: {request.remote_addr}')
         conn = get_connection()
         cursor = conn.cursor()
         password = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
@@ -37,11 +36,13 @@ class User:
             cursor.callproc('cop.cop.login_center_admin', (username, password, self.ip_addr, id_user, id_center))
             self.id_user = int(id_user.getvalue())
             if self.id_user > 0:
+                self.username = username
                 self.get_roles(cursor)
                 if self.have_role('admin'):
                     self.password = password.getvalue()
                     self.id_center = int(id_center.getvalue())
                     log.info(f'LM. Get User By Name. username: {self.username}, id_center: {self.id_center}, '
+                             f'id_user: {self.id_user}, '
                              f'password {self.password}, ip: {self.ip_addr}')
                 else:
                     log.warning(f'LM. Get User By Name. {self.username} is not ADMINISTRATOR')
@@ -74,7 +75,6 @@ class User:
 
     def get_roles(self, cursor):
         my_var = cursor.var(cx_Oracle.CURSOR)
-        records = []
         if cfg.debug_level > 2:
             print("LM. Get Roles for: " + str(self.username) + ', id_user: ' + str(self.id_user))
         try:
@@ -82,6 +82,7 @@ class User:
             rows = my_var.getvalue().fetchall()
             self.roles.clear()
             for row in rows:
+                # print(f"LM. Role for: {self.username}, id_user: {self.id_user} : role: {row[0]}")
                 self.roles.extend([row[0]])
         except cx_Oracle.DatabaseError as e:
             error, = e.args
@@ -146,25 +147,24 @@ def login_page():
         print("Login Page")
     if request.method == "POST":
         username = request.form.get('username')
-        user_password = request.form.get('password')
-        if cfg.debug_level > 0:
-            print(f"1. Login Page. username: {username} : {user_password}")
-        if username and user_password:
-            user = User().get_user_by_name(username)
-            if user is not None and (check_password_hash(user.password, user_password)
-                                     or user_password == user.password):
-                if not user.is_anonymous():
-                    # Принудительно обновляем базовый шаблон
-                    render_template("base.html")
-                    login_user(user)
-                    next_page = request.args.get('next')
-                    if next_page is not None:
-                        return redirect(next_page)
-                    else:
-                        return redirect(url_for('view_programs'))
+        password = request.form.get('password')
+        user = User().get_user_by_name(username)
+        log.info(f"LOGIN PAGE. username:{username}, user.password: {user.password}, password: {password}, "
+                 f"user.is_authenticated: {user.is_authenticated()}")
+        if user and user.is_authenticated() and check_password_hash(user.password, password):
+            render_template("base.html")
+            login_user(user)
+            next_page = request.args.get('next')
+            if next_page is not None:
+                return redirect(next_page)
             else:
-                flash(f"2. Имя пользователя или пароль неверны: {username}")
-                return redirect(url_for('login_page'))
+                return redirect(url_for('view_programs'))
+        else:
+            flash(f"2. Имя пользователя или пароль неверны: {username}")
+            hash_pwd = generate_password_hash(password)
+            log.error(
+                f'AUTHORITY.  Error IP_ADDR ({request.remote_addr}) or PASSWORD: {username} : {password} : {hash_pwd}')
+            return redirect(url_for('login_page'))
     flash('Введите имя и пароль')
     return render_template('login.html')
 
