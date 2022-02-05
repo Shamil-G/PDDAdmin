@@ -1,3 +1,5 @@
+#LIB_DIR = r'/home/pdd/instantclient_21_4'
+LIB_DIR = r'd:/install/oracle/instantclient_19_13'
 username = 'pdd_testing'
 password = 'pdd_01235'
 host = 'db_pdd'

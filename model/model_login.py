@@ -1,6 +1,6 @@
 from typing import Dict, List, Any
-
-from flask import redirect, g, Response, session, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask import redirect, g, request, session, url_for
 from flask_login import login_user
 from db_oracle.UserLogin import User
 from db_oracle.connect import get_connection
@@ -163,21 +163,4 @@ def role_user_del(id_role, id_user):
         cursor.close()
         con.close()
 
-#
-# def authority():
-#     log.debug('===> Start Authority. for ' + str(session['iin']))
-#     username = session['username']
-#     try:
-#         if username:
-#             # Создаем объект регистрации
-#             user = User().get_user_by_name(username)
-#             if user.password ==
-#             if user.is_authenticated():
-#                 login_user(user)
-#     except Exception as e:
-#         error, = e.args
-#         log.debug(f"Error Authority: {session['username']}")
-#         log.debug(f"Error Code: {error.code}")
-#         log.debug(f"Error Message: {error.message}")
-#         return redirect("/")
-#     return redirect(url_for('login_page_fc'))
+

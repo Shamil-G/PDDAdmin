@@ -19,9 +19,6 @@ def about():
     return render_template("about.html")
 
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/home', methods=['GET', 'POST'])
-@app.route('/main', methods=['GET', 'POST'])
 @app.route('/programs', methods=['GET', 'POST'])
 @login_required
 def view_programs():
