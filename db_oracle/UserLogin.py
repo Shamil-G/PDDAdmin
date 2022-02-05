@@ -160,7 +160,7 @@ def login_page():
             else:
                 return redirect(url_for('view_programs'))
         else:
-            flash(f"2. Имя пользователя или пароль неверны: {username}")
+            flash(f"Имя пользователя или пароль неверны: {username}")
             hash_pwd = generate_password_hash(password)
             log.error(
                 f'AUTHORITY.  Error IP_ADDR ({request.remote_addr}) or PASSWORD: {username} : {password} : {hash_pwd}')
