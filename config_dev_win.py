@@ -1,5 +1,5 @@
 debug = True
-debug_level = 2
+debug_level = 4
 host = 'localhost'
 port = 5010
 language = 'ru'

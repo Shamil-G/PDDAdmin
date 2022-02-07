@@ -1,10 +1,12 @@
+#LIB_DIR = r'/home/pdd/instantclient_21_4'
+LIB_DIR = r'd:/install/oracle/instantclient_19_13'
 username = 'pdd_testing'
 password = 'pdd_01235'
 host = 'db_pdd'
 port = 1521
 service = 'pdd'
 encoding = 'UTF-8'
-dsn = '10.51.203.166:1521/pdd'
+dsn = '10.51.203.168:1521/pdd'
 timeout = 300       # В секундах. Время простоя, после которого курсор освобождается
 wait_timeout = 5000
 max_lifetime_session = 2800

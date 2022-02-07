@@ -149,9 +149,9 @@ def login_page():
         username = request.form.get('username')
         password = request.form.get('password')
         user = User().get_user_by_name(username)
-        log.info(f"LOGIN PAGE. username:{username}, user.password: {user.password}, password: {password}, "
-                 f"user.is_authenticated: {user.is_authenticated()}")
         if user and user.is_authenticated() and check_password_hash(user.password, password):
+            log.info(f"LOGIN PAGE. username:{username}, user.password: {user.password}, password: {password}, "
+                     f"user.is_authenticated: {user.is_authenticated()}")
             render_template("base.html")
             login_user(user)
             next_page = request.args.get('next')
@@ -160,7 +160,7 @@ def login_page():
             else:
                 return redirect(url_for('view_programs'))
         else:
-            flash(f"2. Имя пользователя или пароль неверны: {username}")
+            flash(f"Имя пользователя или пароль неверны: {username}")
             hash_pwd = generate_password_hash(password)
             log.error(
                 f'AUTHORITY.  Error IP_ADDR ({request.remote_addr}) or PASSWORD: {username} : {password} : {hash_pwd}')

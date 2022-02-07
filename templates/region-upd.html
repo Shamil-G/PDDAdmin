@@ -10,28 +10,23 @@
 
 {% block body %}
 <form class="form_history_create" method="POST">
-<!--<form class="form_register" method="POST">-->
+    <br>
     <table>
        <tbody>
             <tr>
                 <td><p class="title2">{{ res_value('ID_REGION') }}</p></td>
                 <td><a style="width: 10%" name="id_region">{{ id_region }}</a></td>
-                <br>
             </tr>
-            {% for el in cursor %}
             <tr>
                 <td><p class="title2">{{ res_value('REGION_NAME_RU') }}</p></td>
-                <td><a style="width: 10%">:&emsp;{{ el['name_ru'] }}:&emsp;</a></td>
+                <td><a style="width: 10%">:&emsp;{{ name_ru }}:&emsp;</a></td>
                 <td><input type="text" size="64" maxlength="128" style="width: 100%" name="name_ru"></td>
-                <br>
             </tr>
             <tr>
                 <td><p class="title2">{{ res_value('REGION_NAME_KZ') }}</p></td>
-                <td><a style="width: 10%">:&emsp;{{ el['name_kz'] }}:&emsp;</a></td>
+                <td><a style="width: 10%">:&emsp;{{ name_kz }}:&emsp;</a></td>
                 <td><input type="text" size="64" maxlength="128" style="width: 100%" name="name_kz"></td>
-                <br>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
     <input type="submit" class="bt save" value="{{ res_value('SAVE') }}">

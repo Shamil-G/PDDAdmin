@@ -1,9 +1,12 @@
-from flask import render_template, flash, request,  Response, redirect, g, make_response, url_for
+from flask import render_template, flash, request,  Response, redirect, g, make_response, url_for, session
 from main_app import app, log, cfg
 from flask_login import login_required, current_user, logout_user
 from model.model_regions import *
 
 
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
+@app.route('/main', methods=['GET', 'POST'])
 @app.route('/regions')
 @login_required
 def view_regions():
@@ -29,7 +32,9 @@ def view_region_upd(id_region):
         name_kz = request.form['name_kz']
         region_upd(id_region, name_ru, name_kz)
         return redirect(url_for('view_regions'))
-    return render_template("region-upd.html", id_region=id_region, cursor=region(id_region))
+    name_ru, name_kz = region(id_region)
+    print(f'--------> name_ru: {name_ru}, name_kz: {name_kz}')
+    return render_template("region-upd.html", id_region=id_region, name_ru=name_ru, name_kz=name_kz)
 
 
 @app.route('/region-del/<int:id_region>')
@@ -42,7 +47,11 @@ def view_region_del(id_region):
 @app.route('/centers/<int:id_region>')
 @login_required
 def view_centers(id_region):
-    return render_template("centers.html", id_region=id_region, cursor=centers(id_region))
+    name_ru, name_kz = region(id_region)
+    name_region = name_ru
+    if 'kz' in session['language']:
+        name_region = name_kz
+    return render_template("centers.html", id_region=id_region, name_region=name_region, cursor=centers(id_region))
 
 
 @app.route('/center-add/<int:id_region>', methods=['GET', 'POST'])
@@ -70,7 +79,9 @@ def view_center_upd(id_region, id_center):
         name_kz = request.form['name_kz']
         center_upd(id_center, code_center, name_short_ru, name_short_kz, name_ru, name_kz)
         return redirect(url_for('view_centers', id_region=id_region))
-    return render_template("center-upd.html", id_center=id_center, cursor=center(id_center))
+    region_name, code_center, name_short_ru, name_short_kz, name_ru, name_kz = center(id_center)
+    return render_template("center-upd.html", id_center=id_center, region_name=region_name, code_center=code_center,
+                           name_ru=name_ru, name_kz=name_kz, name_short_ru=name_short_ru, name_short_kz=name_short_kz)
 
 
 @app.route('/center-del/<int:id_region>/<int:id_center>')
