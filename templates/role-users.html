@@ -1,29 +1,26 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{ res_value('ROLE_PARTICIPENT') }}
+    {{ res_value('ROLE_PARTICIPENT') }}:&nbsp;{{ role_name }}
 {% endblock %}
 
 {% block main_title %}
-    <h1  class="title">{{ res_value('ROLE_PARTICIPENT') }}</h1>
+    <h1  class="title">{{ res_value('NAME_ROLE') }}:&nbsp;{{ role_name }}</h1>
 {% endblock %}
 
 {% block body %}
 <div class="role-container">
-    <div class="role_header_all">
-        <a class="title">{{ res_value('FREE_PARTICIPENT') }}</a>
-    </div>
-    <div class="role_header_selected">
-        <a class="title">{{ res_value('ROLE_PARTICIPENT') }}</a>
-    </div>
     <div class="role_all">
-         <table class="table_model_status">
+         <table class="table_role_all">
              <colgroup>
                 <col>
                 <col>
                 <col>
              </colgroup>
              <thead>
+                 <tr>
+                    <a class="title">{{ res_value('FREE_PARTICIPENT') }}:</a>
+                 </tr>
                  <tr>
                      <th><a>{{ res_value('USERNAME') }}</a></th>
                      <th><a>{{ res_value('FIO') }}</a></th>
@@ -46,13 +43,16 @@
         </table><br>
     </div>
     <div class="role_selected">
-         <table class="table_model_status">
+         <table class="table_role_selected">
              <colgroup>
                 <col>
                 <col>
                 <col>
              </colgroup>
              <thead>
+                <tr>
+                    <a class="title">{{ res_value('ROLE_PARTICIPENT') }}:</a>
+                </tr>
                  <tr>
                      <th></th>
                      <th><a>{{ res_value('USERNAME') }}</a></th>

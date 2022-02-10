@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import redirect, g, request, session, url_for
 from flask_login import login_user
 from db_oracle.UserLogin import User
-from db_oracle.connect import get_connection
+from db_oracle.connect import get_connection, plsql_proc
 import requests
 import cx_Oracle
 import os
@@ -70,6 +70,13 @@ def all_users():
         cursor.close()
         con.close()
     return users
+
+
+def get_role_name(id_role):
+    with get_connection().cursor() as cursor:
+        role_name = cursor.var(cx_Oracle.DB_TYPE_VARCHAR)
+        plsql_proc(cursor, 'GET ROLE NAME', 'cop.cop.get_role_name', [id_role, role_name])
+        return role_name.getvalue()
 
 
 def role_users(id_role):
