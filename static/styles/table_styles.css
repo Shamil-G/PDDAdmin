@@ -13,8 +13,14 @@
 /* Форма ABOUT*/
 .table_about, .table_model_status
 {
-    margin: 12px;
+    margin-left:12px;
     border-collapse: collapse;
+}
+.table_role_all{
+    margin-right:auto;
+}
+.table_role_selected{
+    margin-right:auto;
 }
 .table_about caption{
     padding: 12px;
@@ -27,20 +33,26 @@
     padding-bottom: 5px;
     padding-left: 12px;
 }
-.table_model_status th, .table_model_status tbody tr, .table_model_status tbody td
+.table_model_status th, .table_model_status tbody tr, .table_model_status tbody td,
+.table_role_all th, .table_role_all tbody tr, .table_role_all tbody td,
+.table_role_selected th, .table_role_selected tbody tr, .table_role_selected tbody td
 {
     padding: 3px 12px;
     text-align: center;
 }
 /* Делаем границы таблиц*/
 .table_about caption, .table_about th, .table_about tr, .table_about td,
-.table_model_status th, .table_model_status tbody tr, .table_model_status tbody td
+.table_model_status th, .table_model_status tbody tr, .table_model_status tbody td,
+.table_role_all th, .table_role_selected th,
+.table_role_all tbody td, .table_role_selected tbody td
 {
     border-radius: 5px;
     border: 1px solid rgba(0, 47, 189, 0.3);
 }
 /* Подсвечиваем строки на котором стоит курсор*/
-.table_model_status tbody tr:hover, .table_about tr:hover{
+.table_model_status tbody tr:hover, .table_about tr:hover,
+.table_role_all tbody tr:hover, .table_role_selected tbody tr:hover
+{
     background-color: rgba(239, 220, 112, 0.15);
 }
 /* Цвет ячеек по которым отчет еще не сформирован */

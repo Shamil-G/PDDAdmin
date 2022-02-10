@@ -101,28 +101,32 @@ a[href^='/language'], header a[href^='/log'] {
 }
 .role-container {
     min-height: 100%;
+    margin-left: 15px;
+    margin-top: 15px;
+    /*margin-rigth: auto;*/
     display: grid;
-    grid-template-columns: 10fr 10fr;
-    grid-template-rows: 30px auto;
-    grid-gap: 2px;
-    grid-template-areas: "role_header_all role_header_selected"
-                         "role_all role_selected";
+    grid-template-columns: auto auto;
+    /*grid-template-rows: 15px auto;*/
+    grid-gap: 4px;
+    /*grid-template-areas: "role_header_all role_header_selected"*/
+    /*                     "role_all role_selected";*/
+    grid-template-areas: "role_all role_selected";
 }
-.role_header_all {
-    padding: 10px 5px;
-    color: black;
-    align-items: center;
-    grid-area: role_header_all;  /* задаем имя элемента */
-}
-.role_header_selected {
-    padding: 10px 5px;
-    color: black;
-    align-items: center;
-    grid-area: role_header_selected;  /* задаем имя элемента */
-}
+/*.role_header_all {*/
+/*    padding: 10px 5px;*/
+/*    color: black;*/
+/*    align-items: center;*/
+/*    grid-area: role_header_all;  !* задаем имя элемента *!*/
+/*}*/
+/*.role_header_selected {*/
+/*    padding: 10px 5px;*/
+/*    color: black;*/
+/*    align-items: center;*/
+/*    grid-area: role_header_selected;  !* задаем имя элемента *!*/
+/*}*/
 .role_all {
     color: black;
-    align-items: center;
+    align-items: end;
     grid-area: role_all;  /* задаем имя элемента */
 }
 

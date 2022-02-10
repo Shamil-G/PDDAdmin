@@ -188,9 +188,11 @@ def view_role_detail(id_role):
 def view_role_users(id_role):
     _all_users = all_users()
     _role_users = role_users(id_role)
+    role_name = get_role_name(id_role)
     for user in _role_users:
         _all_users.remove(user)
-    return render_template("role-users.html", id_role=id_role, all_users=_all_users, role_users=_role_users)
+    return render_template("role-users.html", id_role=id_role, role_name=role_name,
+                           all_users=_all_users, role_users=_role_users)
 
 
 @app.route('/role-users-add/<int:id_role>/<int:id_user>')
