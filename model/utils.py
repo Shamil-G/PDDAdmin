@@ -1,4 +1,5 @@
-from main_app import app, cfg
+from main_app import app, log
+from main_config import cfg
 from view.i18n import I18N
 from db_oracle.connect import get_connection
 from flask import send_from_directory, send_file, session, redirect, url_for, request

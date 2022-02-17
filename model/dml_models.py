@@ -1,7 +1,8 @@
 from db_oracle.connect import get_connection
 from model.models import TaskF, ThemesF, ResultF, ResultFullF, ResultList
 from flask import redirect, url_for, request, g
-from main_app import log, cfg
+from model.logger import log
+from main_config import cfg
 import cx_Oracle
 
 

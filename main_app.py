@@ -1,6 +1,6 @@
-from __init__ import app, cfg, log
+from __init__ import app, log
 from view import routes
-
+from main_config import cfg
 #
 # Don't remove next lines 
 

@@ -19,9 +19,8 @@ def init_session(connection, requestedTag_ignored):
     cursor.close()
 
 
-log.info(f'------> INSTANT CLIENT: {cfg.LIB_DIR}')
 # cx_Oracle.init_oracle_client(lib_dir=cfg.LIB_DIR, config_dir=r"C:\oracle\your_config_dir")
-#cx_Oracle.init_oracle_client(lib_dir=cfg.LIB_DIR)
+cx_Oracle.init_oracle_client(lib_dir=cfg.LIB_DIR)
 _pool = cx_Oracle.SessionPool(cfg.username, cfg.password, cfg.dsn,
                               timeout=cfg.timeout, wait_timeout=cfg.wait_timeout,
                               max_lifetime_session=cfg.max_lifetime_session,

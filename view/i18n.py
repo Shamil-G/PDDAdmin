@@ -1,6 +1,7 @@
 from typing import List, Any
 import os.path
-from main_app import cfg
+from main_config import cfg
+from model.logger import log
 
 
 class I18N:
