@@ -1,6 +1,6 @@
 import logging
-import logging.config
-import main_config as adm_cfg
+from logging.handlers import RotatingFileHandler
+import main_config as cfg
 # import sys
 
 
@@ -9,11 +9,11 @@ def init_logger():
     # logging.getLogger('PDD').addHandler(logging.StreamHandler(sys.stdout))
     # Console
     logging.getLogger('PDD-ADMIN').addHandler(logging.StreamHandler())
-    if adm_cfg.debug:
+    if cfg.debug:
         logger.setLevel(logging.DEBUG)
     else:
         logger.setLevel(logging.INFO)
-    fh = logging.FileHandler(adm_cfg.LOG_FILE, encoding="UTF-8")
+    fh = RotatingFileHandler(cfg.LOG_FILE, maxBytes=10000000, backupCount=5)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
 

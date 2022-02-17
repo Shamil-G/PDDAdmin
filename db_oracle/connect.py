@@ -9,7 +9,7 @@ from flask import session, request
 try:
     import cx_Oracle
 except ImportError:
-    log.debug("Error import cx_Oracle :", cx_Oracle.DataError)
+    log.critical("Error import cx_Oracle :", cx_Oracle.DataError)
 
 
 def init_session(connection, requestedTag_ignored):
@@ -26,8 +26,8 @@ _pool = cx_Oracle.SessionPool(cfg.username, cfg.password, cfg.dsn,
                               max_lifetime_session=cfg.max_lifetime_session,
                               encoding=cfg.encoding, min=cfg.pool_min, max=cfg.pool_max, increment=cfg.pool_inc,
                               threaded=True, sessionCallback=init_session)
-log.info(f'Пул соединенй БД Oracle создан. Timeout: {_pool.timeout}, wait_timeout: {_pool.wait_timeout}, '
-          f'max_lifetime_session: {_pool.max_lifetime_session}')
+log.info(f'Connection POOL created. Timeout: {_pool.timeout}, wait_timeout: {_pool.wait_timeout}, '
+         f'max_lifetime_session: {_pool.max_lifetime_session}')
 
 
 def get_connection():
