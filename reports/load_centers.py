@@ -1,5 +1,5 @@
 from db_oracle.connect import get_connection
-import main_app as cfg
+import main_config as cfg
 from openpyxl import load_workbook
 import datetime
 import os.path

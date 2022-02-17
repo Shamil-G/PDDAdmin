@@ -1,7 +1,6 @@
 from __init__ import app, log
-from main_config import cfg
 from view import routes
-
+from main_config import cfg
 #
 # Don't remove next lines 
 

@@ -1,6 +1,6 @@
 debug_level = 2
-host = 'pdd-dev'
-port = 5010
+host = 'pdd_2'
+port = 5011
 language = 'ru'
 src_lang = 'file'
 os = 'unix'

@@ -5,7 +5,8 @@ from model.utils import *
 # from model.testing import *
 from model.dml_models import *
 from model.model_login import *
-from main_app import app, log, cfg
+from main_app import app, log
+from main_config import cfg
 from reports.print_personal_report import print_result_test
 from view.routes_regions import *
 from loading.load_pdd import load_task

@@ -2,6 +2,7 @@ from flask import Flask
 import db_config as db_cfg
 from model.logger import log
 
+
 app = Flask(__name__, template_folder='templates', static_folder='static')
 # app = Flask(__name__)
 app.secret_key = 'this is secret key qer;ekjf;keriutype2t0287'

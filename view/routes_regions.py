@@ -1,5 +1,6 @@
 from flask import render_template, flash, request,  Response, redirect, g, make_response, url_for, session
-from main_app import app, log, cfg
+from main_app import app, log
+from main_config import cfg
 from flask_login import login_required, current_user, logout_user
 from model.model_regions import *
 

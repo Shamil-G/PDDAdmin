@@ -7,3 +7,4 @@ __init__.pyc
 *__pycache__/
 /pdd.log
 /pdd-admin.log
+pdd_wsgi.log

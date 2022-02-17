@@ -1,5 +1,6 @@
 from db_oracle.connect import cx_Oracle, get_connection, plsql_proc_s, plsql_proc
-from main_app import log, cfg
+from main_app import log
+from main_config import cfg
 
 
 class RegionF(object):

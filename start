@@ -1,9 +1,12 @@
 #python3 -m venv venv
 . /home/pdd/PDDAdmin/venv/bin/activate
+pip install --upgrade pip
 #pip install flask
 #pip install flask_login
 #pip install cx_Oracle
 #pip install xlsxwriter
 #pip install openpyxl
 #pip install flask_sqlalchemy
+#pip install uwsgi
+#pip install requests
 python /home/pdd/PDDAdmin/main_app.py

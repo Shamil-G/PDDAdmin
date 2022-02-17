@@ -7,7 +7,8 @@ from db_oracle.connect import get_connection, plsql_proc
 import requests
 import cx_Oracle
 import os
-from main_app import log, cfg
+from main_app import log
+from main_config import cfg
 import base64
 
 

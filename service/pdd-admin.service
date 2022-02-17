@@ -1,0 +1,14 @@
+[Unit]
+Description=WSGI-PDDAdmin
+After=network.target
+
+[Service]
+User=pdd
+Group=pdd
+WorkingDirectory=/home/pdd/PDDAdmin
+Environment="LD_LIBRARY_PATH=/home/pdd/instantclient_21_4"
+ExecStart=/home/pdd/PDDAdmin/venv/bin/uwsgi --ini wsgi.ini
+
+
+[Install] 
+WantedBy=multi-user.target
