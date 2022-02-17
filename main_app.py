@@ -1,4 +1,5 @@
-from __init__ import app, cfg, log
+from __init__ import app, log
+from main_config import cfg
 from view import routes
 
 #
