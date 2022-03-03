@@ -66,6 +66,7 @@ nav {
     margin: 0;
     padding: 2px;
     display: grid;
+    overflow-x: hidden;
     grid-template-rows: repeat(6,minmax(48px, 80px));
     grid-template-columns: 100%;
     grid-row-gap: 3px;

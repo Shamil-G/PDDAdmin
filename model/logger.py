@@ -13,7 +13,8 @@ def init_logger():
         logger.setLevel(logging.DEBUG)
     else:
         logger.setLevel(logging.INFO)
-    fh = RotatingFileHandler(cfg.LOG_FILE, maxBytes=10000000, backupCount=5)
+    fh = logging.FileHandler(cfg.LOG_FILE, encoding="UTF-8")
+    # fh = RotatingFileHandler(cfg.LOG_FILE, encoding="UTF-8", maxBytes=10000000, backupCount=5)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
 

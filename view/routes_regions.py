@@ -65,7 +65,7 @@ def view_center_add(id_region):
         name_ru = request.form['name_ru']
         name_kz = request.form['name_kz']
         center_add(id_region, code_center, name_short_ru, name_short_kz, name_ru, name_kz)
-        return redirect(url_for('view_centers'))
+        return redirect(url_for('view_centers', id_region=id_region))
     return render_template("center-add.html", id_region=id_region)
 
 
