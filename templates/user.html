@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {{ res_value('REGISTER_NEW_USER') }}
+    {{ res_value('CHANGE_USER') }}
 {% endblock %}
 
 {% block main_title %}
-    <h1 class="title">{{ res_value('REGISTER_NEW_USER') }}</h1>
+    <h1 class="title">{{ res_value('CHANGE_USER') }}</h1>
 {% endblock %}
 
 {% block body %}
@@ -24,39 +24,36 @@
     <table>
         <tr>
             <td><a>{{ res_value('NEW_NICKNAME') }}</a></td>
-            <td><input class="form_username" type="text" name="username"></td>
+            <td><input class="form_username" type="text" name="username" value="{{ username }}"></td>
         </tr>
         <tr>
             <td><a>{{ res_value('PASSWORD') }}</a></td>
             <td><input class="form_password" type="password" name="password"></td>
         </tr>
-        <tr>
-            <td><a>{{ res_value('REPEATE_PASSWORD') }}</a></td>
-            <td><input class="form_password" type="password" name="password2"></td>
-        </tr>
+        <br>
         <tr>
             <td><a>{{ res_value('IIN') }}</a></td>
-            <td><input class="iin" type="text" name="iin" minlength="12" maxlength="12" pattern="[0-9]{12}"></td>
+            <td><input class="iin" type="text" name="iin" minlength="12" maxlength="12" pattern="[0-9]{12}" value="{{ iin }}"></td>
         </tr>
         <tr>
             <td><a>{{ res_value('LAST_NAME') }}</a></td>
-            <td><input class="form_username" type="text" name="last_name"></td>
+            <td><input class="form_username" type="text" name="last_name" value="{{ last_name }}"></td>
         </tr>
         <tr>
             <td><a>{{ res_value('FIRST_NAME') }}</a></td>
-            <td><input class="form_username" type="text" name="first_name"></td>
+            <td><input class="form_username" type="text" name="first_name" value="{{ first_name }}"></td>
         </tr>
         <tr>
             <td><a>{{ res_value('MIDDLE_NAME') }}</a></td>
-            <td><input class="form_username" type="text" name="middle_name"></td>
+            <td><input class="form_username" type="text" name="middle_name" value="{{ middle_name }}"></td>
         </tr>
         <tr>
             <td><a>{{ res_value('POST_DESCRIPTION') }}</a></td>
-            <td><input class="description" type="text" name="description"></td>
+            <td><input class="description" type="text" name="description" value="{{ description }}"></td>
         </tr>
 
         <tr>
-            <td><input class="bt register" type="submit" value="{{ res_value('REGISTER') }}"></td>
+            <td><input class="bt register" type="submit" value="{{ res_value('BUTTON_SAVE') }}"></td>
         </tr>
     </table>
 </form>

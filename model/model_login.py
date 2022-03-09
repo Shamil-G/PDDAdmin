@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import redirect, g, request, session, url_for
 from flask_login import login_user
 from db_oracle.UserLogin import User
-from db_oracle.connect import get_connection, plsql_proc
+from db_oracle.connect import get_connection, plsql_proc, plsql_proc_s
 import requests
 import cx_Oracle
 import os
@@ -73,11 +73,39 @@ def all_users():
     return users
 
 
+def list_users():
+    con = get_connection()
+    cursor = con.cursor()
+    my_var = cursor.var(cx_Oracle.CURSOR)
+    users = []
+    try:
+        cursor.callproc('cop.cop.list_users', [my_var])
+        rows = my_var.getvalue().fetchall()
+        for row in rows:
+            user = {'id_user': row[0], 'oper': row[1], 'oper_center': row[2], 'admin': row[3], 'secure': row[4],
+                    'username': row[5], 'fio': row[6], 'descr': row[7]}
+            users.append(user)
+        rows.clear()
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        log.error(f'ERROR. ALL USERS')
+        log.error(f'Error Code: {error.code}, Error Message: {error.message}')
+    finally:
+        cursor.close()
+        con.close()
+    return users
+
+
 def get_role_name(id_role):
     with get_connection().cursor() as cursor:
         role_name = cursor.var(cx_Oracle.DB_TYPE_VARCHAR)
         plsql_proc(cursor, 'GET ROLE NAME', 'cop.cop.get_role_name', [id_role, role_name])
         return role_name.getvalue()
+
+
+def alter_role(id_user, role_name):
+    plsql_proc_s('ALTER_ROLE', 'cop.cop.alter_user_role', [id_user, role_name])
+    log.info(f'ALTER ROLE. id_role: {id_user}, role_name: {role_name}')
 
 
 def role_users(id_role):
@@ -172,3 +200,22 @@ def role_user_del(id_role, id_user):
         con.close()
 
 
+def get_user_info(id_user: int):
+    with get_connection().cursor() as cursor:
+        username = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
+        iin = cursor.var(cx_Oracle.DB_TYPE_VARCHAR)
+        first_name = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
+        last_name = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
+        middle_name = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
+        descr = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
+        plsql_proc(cursor, 'GET USER INFO', 'cop.cop.get_user_info',
+                   [id_user, username, iin, last_name, first_name, middle_name, descr])
+        log.info(f'GET USER INFO.  ID_USER: {id_user}, username: {username.getvalue()}, iin; {iin.getvalue()}')
+        return username.getvalue(), iin.getvalue(), last_name.getvalue(), first_name.getvalue(), \
+               middle_name.getvalue(), descr.getvalue()
+
+
+def set_user_info(id_user: int, username, password, iin, last_name, first_name, middle_name, descr):
+    log.info(f'SET USER INFO.  ID_USER: {id_user}, username: {username}, iin; {iin}')
+    plsql_proc_s('SET USER INFO', 'cop.cop.set_user_info',
+                 [id_user, username, password, iin, last_name, first_name, middle_name, descr])

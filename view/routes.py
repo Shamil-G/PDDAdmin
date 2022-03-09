@@ -142,6 +142,12 @@ def view_roles():
     return render_template("roles.html", cursor=all_roles())
 
 
+@app.route('/alter-role/<int:id_user>/<string:role_name>')
+def view_alter_role_users(id_user, role_name):
+    alter_role(id_user, role_name)
+    return redirect(url_for('view_list_users'))
+
+
 @app.route('/role-delete/<int:id_role>')
 def view_role_delete(id_role):
     role_delete(id_role)
@@ -208,7 +214,31 @@ def view_role_users_del(id_role, id_user):
     return redirect(url_for('view_role_users', id_role=id_role))
 
 
-@app.route('/user/<string:name>/<int:id_user>')
-def user_page(name, id_user):
-    return "User: " + name + " : " + str(id_user)
+@app.route('/list-users')
+def view_list_users():
+    return render_template("list_users.html", cursor=list_users())
+
+
+@app.route('/user/<int:id_user>', methods=['POST', 'GET'])
+def user_page(id_user):
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+        iin = request.form['iin']
+        last_name = request.form['last_name']
+        first_name = request.form['first_name']
+        middle_name = request.form['middle_name']
+        description = request.form['description']
+        if type(password) is str and password != '':
+            hash_pwd = generate_password_hash(password)
+        else:
+            hash_pwd = ''
+        log.info(f'USER PAGE. POST. ID_USER: {id_user}, IIN: {iin}, username: {username}, password: {password}')
+        set_user_info(id_user, username, hash_pwd, iin, last_name, first_name, middle_name, description)
+        return redirect(url_for('view_list_users'))
+    log.info(f'USER PAGE. GET ID_USER: {id_user}')
+    username, iin, last_name, first_name, middle_name, description = get_user_info(id_user)
+    password = ''
+    return render_template("user.html", username=username, password=password, iin=iin, last_name=last_name,
+                           first_name=first_name, middle_name=middle_name, description=description)
 

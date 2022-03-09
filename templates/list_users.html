@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ res_value('ROLES') }}
+{% endblock %}
+
+{% block main_title %}
+    <h1  class="title">{{ res_value('LIST_ROLES') }}</h1>
+{% endblock %}
+
+{% block body %}
+<form class="form_register" method="POST">
+     <table class="table_model_status">
+         <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+         </colgroup>
+         <thead>
+             <tr>
+                 <th><a>{{ res_value('ID_USER') }}</a></th>
+                 <th><a>{{ res_value('IS_OPER') }}</a></th>
+                 <th><a>{{ res_value('IS_OPER_CENTER') }}</a></th>
+                 <th><a>{{ res_value('IS_ADMIN') }}</a></th>
+                 <th><a>{{ res_value('IS_SECURE') }}</a></th>
+                 <th><a>{{ res_value('NICKNAME') }}</a></th>
+                 <th><a>{{ res_value('FIO') }}</a></th>
+                 <th><a>{{ res_value('DESCR') }}</a></th>
+                 <th><a class="bt register" href="/register">{{ res_value('NEW_NICK') }}</a></th>
+             </tr>
+         </thead>
+         <tfoot></tfoot>
+         <tbody>
+            {% for el in cursor %}
+              <tr>
+                  <td><a>{{ el['id_user'] }}</a></td>
+                  <td><a style="text-decoration: none; color: {% if el['oper'] == 1 %}green{% else %}darkred{% endif %}" href="/alter-role/{{ el['id_user'] }}/oper">{% if el['oper'] == 1 %}Да{% else %}Нет{% endif %}</a></td>
+                  <td><a style="text-decoration: none; color: {% if el['oper_center'] == 1 %}green{% else %}darkred{% endif %}" href="/alter-role/{{ el['id_user'] }}/oper_center">{% if el['oper_center'] == 1 %}Да{% else %}Нет{% endif %}</a></td>
+                  <td><a style="text-decoration: none; color: {% if el['admin'] == 1 %}green{% else %}darkred{% endif %}" href="/alter-role/{{ el['id_user'] }}/admin">{% if el['admin'] == 1 %}Да{% else %}Нет{% endif %}</a></td>
+                  <td><a style="text-decoration: none; color: {% if el['secure'] == 1 %}green{% else %}darkred{% endif %}" href="/alter-role/{{ el['id_user'] }}/secure">{% if el['secure'] == 1 %}Да{% else %}Нет{% endif %}</a></td>
+                  <td style="margin-left: 12px; text-align: left; text-decoration: none;" ><a href="/change-user/{{ el['id_user'] }}">{{ el['username'] }}</a></td>
+                  <td style="margin-left: 12px; text-align: left"><a href="/user/{{ el['id_user'] }}">{{ el['fio'] }}</a></td>
+                  <td style="margin-left: 12px; text-align: left"><a href="/user/{{ el['id_user'] }}">{{ el['descr'] }}</a></td>
+                  <td><a class="bt register" style="margin: 0px" href="/user/{{ el['id_user'] }}">{{ res_value('CHANGE_USER') }}</a></td>
+              </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+    </table><br>
+</form>
+{% endblock %}
