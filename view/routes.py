@@ -8,6 +8,7 @@ from model.model_login import *
 from main_app import app, log
 from main_config import cfg
 from reports.print_personal_report import print_result_test
+from reports.load_operators import load_operators
 from view.routes_regions import *
 from loading.load_pdd import load_task
 
@@ -219,12 +220,21 @@ def view_list_users():
     return render_template("list_users.html", cursor=list_users())
 
 
+@app.route('/load-users')
+def view_load_users():
+    load_operators('operators.xlsx')
+    return redirect(url_for('view_list_users', cursor=list_users()))
+
+
 @app.route('/user/<int:id_user>', methods=['POST', 'GET'])
 def user_page(id_user):
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
         iin = request.form['iin']
+        phone = ''
+        if 'phone' in request.form:
+            phone = request.form['phone']
         last_name = request.form['last_name']
         first_name = request.form['first_name']
         middle_name = request.form['middle_name']
@@ -234,11 +244,11 @@ def user_page(id_user):
         else:
             hash_pwd = ''
         log.info(f'USER PAGE. POST. ID_USER: {id_user}, IIN: {iin}, username: {username}, password: {password}')
-        set_user_info(id_user, username, hash_pwd, iin, last_name, first_name, middle_name, description)
+        set_user_info(id_user, username, hash_pwd, iin, phone, last_name, first_name, middle_name, description)
         return redirect(url_for('view_list_users'))
     log.info(f'USER PAGE. GET ID_USER: {id_user}')
-    username, iin, last_name, first_name, middle_name, description = get_user_info(id_user)
+    username, iin, phone, last_name, first_name, middle_name, description = get_user_info(id_user)
     password = ''
-    return render_template("user.html", username=username, password=password, iin=iin, last_name=last_name,
+    return render_template("user.html", username=username, password=password, iin=iin, phone=phone, last_name=last_name,
                            first_name=first_name, middle_name=middle_name, description=description)
 

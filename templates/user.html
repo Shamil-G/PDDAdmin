@@ -36,6 +36,10 @@
             <td><input class="iin" type="text" name="iin" minlength="12" maxlength="12" pattern="[0-9]{12}" value="{{ iin }}"></td>
         </tr>
         <tr>
+            <td><a>{{ res_value('PHONE') }}</a></td>
+            <td><input class="iin" type="text" name="phone" minlength="16" maxlength="16" pattern="[+]{1}[0-9]{1}[(]{1}[0-9]{3}[)]{1}[0-9]{7}" value="{{ phone }}"></td>
+        </tr>
+        <tr>
             <td><a>{{ res_value('LAST_NAME') }}</a></td>
             <td><input class="form_username" type="text" name="last_name" value="{{ last_name }}"></td>
         </tr>

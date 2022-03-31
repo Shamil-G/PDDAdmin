@@ -108,7 +108,10 @@ UPD_ROLE = Обновить название роли
 FIRST_NAME = Имя
 LAST_NAME = Фамилия
 MIDDLE_NAME = Отчество
+PHONE = Телефон
 POST_DESCRIPTION = Описание должности
 CHANGE_PASSWORD = Изменить пароль
 REPEAT_PASSWORD = Повторить пароль
 CHANGE_USER = Личные данные
+LOAD_USERS = Загрузить
+

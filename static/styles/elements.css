@@ -34,7 +34,7 @@
 }
 
 input[name="username"], input[name*="password"],
-input[name*="iin"],
+input[name*="iin"], input[name*="phone"],
 input[name*="first_name"], input[name*="last_name"], input[name*="middle_name"],
 input[name*="description"]
 {
@@ -47,7 +47,7 @@ input[name*="description"]
     background-color: rgba(229, 226, 212, 0.2);
 }
 input[name="username"]:hover, input[name*="password"]:hover,
-input[name*="iin"]:hover,
+input[name*="iin"]:hover, input[name*="phone"]:hover,
 input[name*="first_name"]:hover, input[name*="last_name"]:hover, input[name*="middle_name"]:hover,
 input[name*="description"]:hover
 {

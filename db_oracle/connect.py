@@ -1,6 +1,6 @@
 import db_config as cfg
 from main_app import log
-from flask import session, request
+from flask import request
 #import cx_Oracle
 #from cx_Oracle import SessionPool
 # con = cx_Oracle.connect(cfg.username, cfg.password, cfg.dsn, encoding=cfg.encoding)

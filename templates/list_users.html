@@ -27,7 +27,10 @@
                  <th><a>{{ res_value('NICKNAME') }}</a></th>
                  <th><a>{{ res_value('FIO') }}</a></th>
                  <th><a>{{ res_value('DESCR') }}</a></th>
-                 <th><a class="bt register" href="/register">{{ res_value('NEW_NICK') }}</a></th>
+                 <th>
+                     <a class="bt register" href="/register">{{ res_value('NEW_NICK') }}</a>
+                     <a class="bt register" href="/load-users">{{ res_value('LOAD_USERS') }}</a>
+                 </th>
              </tr>
          </thead>
          <tfoot></tfoot>
@@ -39,7 +42,7 @@
                   <td><a style="text-decoration: none; color: {% if el['oper_center'] == 1 %}green{% else %}darkred{% endif %}" href="/alter-role/{{ el['id_user'] }}/oper_center">{% if el['oper_center'] == 1 %}Да{% else %}Нет{% endif %}</a></td>
                   <td><a style="text-decoration: none; color: {% if el['admin'] == 1 %}green{% else %}darkred{% endif %}" href="/alter-role/{{ el['id_user'] }}/admin">{% if el['admin'] == 1 %}Да{% else %}Нет{% endif %}</a></td>
                   <td><a style="text-decoration: none; color: {% if el['secure'] == 1 %}green{% else %}darkred{% endif %}" href="/alter-role/{{ el['id_user'] }}/secure">{% if el['secure'] == 1 %}Да{% else %}Нет{% endif %}</a></td>
-                  <td style="margin-left: 12px; text-align: left; text-decoration: none;" ><a href="/change-user/{{ el['id_user'] }}">{{ el['username'] }}</a></td>
+                  <td style="margin-left: 12px; text-align: left; text-decoration: none;" ><a href="/user/{{ el['id_user'] }}">{{ el['username'] }}</a></td>
                   <td style="margin-left: 12px; text-align: left"><a href="/user/{{ el['id_user'] }}">{{ el['fio'] }}</a></td>
                   <td style="margin-left: 12px; text-align: left"><a href="/user/{{ el['id_user'] }}">{{ el['descr'] }}</a></td>
                   <td><a class="bt register" style="margin: 0px" href="/user/{{ el['id_user'] }}">{{ res_value('CHANGE_USER') }}</a></td>

@@ -55,14 +55,14 @@ class User:
         else:
             return self
 
-    def new_user(i_username, i_password, iin, first_name, last_name, middle_name, description):
+    def new_user(i_username, i_password, iin, phone, first_name, last_name, middle_name, description):
         hash_pwd = generate_password_hash(i_password)
         con = get_connection()
         cursor = con.cursor()
         message = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
         print(f'LM. NEW USER. {i_username} {i_password} {iin} {first_name} {description}')
         try:
-            cursor.callproc('cop.cop.new_user2', [i_username, hash_pwd, int(g.user.id_user), iin,
+            cursor.callproc('cop.cop.new_user2', [i_username, hash_pwd, int(g.user.id_user), iin, phone,
                             first_name, last_name, middle_name, description, message])
         except cx_Oracle.DatabaseError as e:
             error, = e.args
@@ -178,6 +178,10 @@ def register():
             password = request.form.get('password')
             password2 = request.form.get('password2')
             iin = request.form.get('iin')
+            if 'phone' in request.form:
+                phone = request.form.get('phone')
+            else:
+                phone = ''
             first_name = request.form.get('first_name')
             last_name = request.form.get('last_name')
             middle_name = request.form.get('middle_name')
@@ -193,7 +197,7 @@ def register():
                 return redirect(url_for('register'))
             log.info(f'REGISTER. {username} {password} {iin} {first_name} {description}')
             print(f'REGISTER. {username} {password} {iin} {first_name} {description}')
-            message = User.new_user(username, password, iin, first_name, last_name, middle_name, description)
+            message = User.new_user(username, password, iin, phone, first_name, last_name, middle_name, description)
             if message:
                 flash(message)
                 return render_template('register.html')
