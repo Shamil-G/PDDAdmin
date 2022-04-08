@@ -1,6 +1,5 @@
 from pdd_parameter import using
 from model.logger import log
-#from redis import Redis
 import redis
 
 if using[0:7] != 'DEV_WIN':
@@ -10,7 +9,21 @@ elif using == 'DEV_WIN_HOME':
 else:
     LIB_DIR = r'C:\Shamil\instantclient_21_3'
 
-log.info(f"=====> DB CONFIG. using: {using}, LIB_DIR: {LIB_DIR}")
+if using == 'PROD':
+    dsn = '10.51.203.168:1521/pdd'
+else:
+    dsn = '10.51.203.166:1521/pdd'
+
+if using[0:7] != 'DEV_WIN':
+    pool_min = 20
+    pool_max = 200
+    pool_inc = 20
+    Debug = True
+else:
+    pool_min = 4
+    pool_max = 10
+    pool_inc = 4
+    Debug = True
 
 username = 'pdd_testing'
 password = 'pdd_01235'
@@ -18,28 +31,28 @@ host = 'dbpdd'
 port = 1521
 service = 'pdd'
 encoding = 'UTF-8'
-dsn = '10.51.203.168:1521/pdd'
 timeout = 60       # В секундах. Время простоя, после которого курсор освобождается
 wait_timeout = 15000  # Время (в миллисекундах) ожидания доступного сеанса в пуле, перед тем как выдать ошибку
 max_lifetime_session = 2800  # Время в секундах, в течении которого может существоват сеанс
-pool_min = 4
-pool_max = 20
-pool_inc = 4
-Debug = True
+
+print(f"=====> DB CONFIG. using: {using}, LIB_DIR: {LIB_DIR}, DSN: {dsn}")
+log.info(f"=====> DB CONFIG. using: {using}, LIB_DIR: {LIB_DIR}, DSN: {dsn}")
 
 
 class SessionConfig:
     # secret_key = 'this is secret key qer:ekjf;keriutype2tO287'
     SECRET_KEY = 'this is secret key qer:ekjf;keriutype2tO287'
-    SESSION_TYPE = 'redis'
-    # SESSION_TYPE = "filesystem"
-    SESSION_REDIS = redis.from_url('redis://@10.51.203.144:6379')
+    if using == 'DEV_WIN_HOME':
+        SESSION_TYPE = "filesystem"
+    else:
+        SESSION_TYPE = 'redis'
+        SESSION_REDIS = redis.from_url('redis://@10.51.203.144:6379')
     SESSION_USE_SIGNER = True
     # SESSION_REDIS = Redis(host='10.51.203.144', port='6379')
     # SESSION_PERMANENT = False
-    PERMANENT_SESSION_LIFETIME = 36000
+    PERMANENT_SESSION_LIFETIME = 3000
     # SQLALCHEMY_DATABASE_URI = f'oracle+cx_oracle://{username}:{password}@{dsn}'
     # SQLALCHEMY_TRACK_MODIFICATIONS = False
-    print(f"----------> SESSION_REDIS: {SESSION_REDIS}")
+    print(f"----------> TYPE SESSION: {SESSION_TYPE}")
 
 

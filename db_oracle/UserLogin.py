@@ -5,7 +5,7 @@ import cx_Oracle
 from werkzeug.security import check_password_hash, generate_password_hash
 from db_oracle.connect import get_connection
 from main_app import app, log
-from main_config import cfg
+import app_config as cfg
 
 
 login_manager = LoginManager(app)

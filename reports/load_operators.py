@@ -1,4 +1,4 @@
-from main_config import cfg
+import app_config as cfg
 from db_oracle.connect import get_connection
 from openpyxl import load_workbook
 import datetime

@@ -1,6 +1,6 @@
 from typing import List, Any
 import os.path
-from main_config import cfg
+import app_config as cfg
 from model.logger import log
 
 

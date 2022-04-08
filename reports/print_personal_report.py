@@ -1,5 +1,5 @@
 from model.dml_models import get_result, get_result_info, get_id_reg_by_iin
-from main_config import cfg
+import app_config as cfg
 import xlsxwriter
 import datetime
 import os.path

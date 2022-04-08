@@ -6,7 +6,7 @@ from model.utils import *
 from model.dml_models import *
 from model.model_login import *
 from main_app import app, log
-from main_config import cfg
+import app_config as cfg
 from reports.print_personal_report import print_result_test
 from reports.load_operators import load_operators
 from view.routes_regions import *

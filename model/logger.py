@@ -1,6 +1,6 @@
 import logging
 from logging.handlers import RotatingFileHandler
-import main_config as cfg
+import app_config as cfg
 # import sys
 
 
@@ -19,7 +19,7 @@ def init_logger():
     fh.setFormatter(formatter)
 
     logger.addHandler(fh)
-    logger.info('Logging started')
+    logger.info('=====> Logging started')
     return logger
 
 

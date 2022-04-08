@@ -8,7 +8,7 @@ import requests
 import cx_Oracle
 import os
 from main_app import log
-from main_config import cfg
+import app_config as cfg
 import base64
 
 

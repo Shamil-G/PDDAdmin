@@ -2,7 +2,7 @@ from db_oracle.connect import get_connection
 from model.models import TaskF, ThemesF, ResultF, ResultFullF, ResultList
 from flask import redirect, url_for, request, g
 from model.logger import log
-from main_config import cfg
+import app_config as cfg
 import cx_Oracle
 
 
