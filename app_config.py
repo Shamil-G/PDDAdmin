@@ -24,6 +24,7 @@ PHOTO = f'{BASE}/static/photo'
 LIVE_PHOTO = f'{BASE}/live-photo'
 PICTURES = '/static/pictures'
 LOG_FILE = f'{BASE}/app-admin.log'
+UPLOAD_PATH = f'{BASE}/reports'
 debug = True
 language = 'ru'
 src_lang = 'file'

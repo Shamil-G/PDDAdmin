@@ -49,25 +49,27 @@ def load_operators(file_name):
             username = sheet.cell(row=i, column=6).value
             password = sheet.cell(row=i, column=7).value
 
-            if not id_rec:
-                break
-            fio_split = fio.split(' ')
-            fname = fio_split[1]
-            flast_name = fio_split[0]
-            if len(fio_split) == 3:
-                fmiddle_name = fio_split[2]
-            else:
-                fmiddle_name = ''
-            hash_pwd = generate_password_hash(password)
-            message = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
-            # cmd = "insert into cop.users (id_user, active, phone, iin, date_op, username, password, " \
-            #       "lastname, name, middlename, descr) " \
-            #       f"values (seq_persons.nextval, 'Y', '{phone}', '{iin}', '{s_now}', '{username}', '{password}', " \
-            #       f"'{flast_name}', '{fname}', '{fmiddle_name}', '{descr}')"
-            print(f"iin: {iin}, phone: {phone}, fname: {fname}, flast_name: {flast_name}, fmiddle_name: {fmiddle_name}")
-            cursor.callproc('cop.cop.new_user2', [username, hash_pwd, int(g.user.id_user), iin, phone,
-                            fname, flast_name, fmiddle_name, descr, message])
-            # cursor.execute(cmd)
+            if iin and username and password:
+                if not id_rec:
+                    break
+                fio_split = fio.split(' ')
+                fname = fio_split[1]
+                flast_name = fio_split[0]
+                if len(fio_split) == 3:
+                    fmiddle_name = fio_split[2]
+                else:
+                    fmiddle_name = ''
+
+                hash_pwd = generate_password_hash(password)
+                message = cursor.var(cx_Oracle.DB_TYPE_NVARCHAR)
+                # cmd = "insert into cop.users (id_user, active, phone, iin, date_op, username, password, " \
+                #       "lastname, name, middlename, descr) " \
+                #       f"values (seq_persons.nextval, 'Y', '{phone}', '{iin}', '{s_now}', '{username}', '{password}', " \
+                #       f"'{flast_name}', '{fname}', '{fmiddle_name}', '{descr}')"
+                print(f"iin: {iin}, phone: {phone}, fname: {fname}, flast_name: {flast_name}, fmiddle_name: {fmiddle_name}")
+                cursor.callproc('cop.cop.new_user2', [username, hash_pwd, int(g.user.id_user), iin, phone,
+                                fname, flast_name, fmiddle_name, f'Ustudy: {descr}', message])
+                # cursor.execute(cmd)
 
     con.commit()
     con.close()
