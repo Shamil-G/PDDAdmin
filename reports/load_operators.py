@@ -1,4 +1,5 @@
 import app_config as cfg
+from main_app import log
 from db_oracle.connect import get_connection
 from openpyxl import load_workbook
 import datetime
@@ -66,10 +67,14 @@ def load_operators(file_name):
                 #       "lastname, name, middlename, descr) " \
                 #       f"values (seq_persons.nextval, 'Y', '{phone}', '{iin}', '{s_now}', '{username}', '{password}', " \
                 #       f"'{flast_name}', '{fname}', '{fmiddle_name}', '{descr}')"
-                print(f"iin: {iin}, phone: {phone}, fname: {fname}, flast_name: {flast_name}, fmiddle_name: {fmiddle_name}")
-                cursor.callproc('cop.cop.new_user2', [username, hash_pwd, int(g.user.id_user), iin, phone,
-                                fname, flast_name, fmiddle_name, f'Ustudy: {descr}', message])
-                # cursor.execute(cmd)
+                log.info(f"id: {id_rec}, iin: {iin}, phone: {phone}, fname: {fname}, flast_name: {flast_name}, "
+                         f"fmiddle_name: {fmiddle_name}")
+                try:
+                    cursor.callproc('cop.cop.new_user2', [username, hash_pwd, int(g.user.id_user), iin, phone,
+                                    fname, flast_name, fmiddle_name, f'Ustudy: {descr}', message])
+                except cx_Oracle.DatabaseError as e:
+                    error, = e.args
+                    log.error(f"------execute------> ERROR. {fname}. Oracle error: {error.code} : {error.message}")
 
     con.commit()
     con.close()
