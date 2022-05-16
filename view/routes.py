@@ -86,6 +86,7 @@ def view_program_detail(id_task):
 
 
 @app.route('/program-detail/<int:id_task>/load-file', methods=['GET', 'POST'])
+@login_required
 def upload_file(id_task):
     if request.method == "POST":
         upl_file_theme = request.files['file-theme']
@@ -120,6 +121,7 @@ def upload_file_theme(id_task, upl_file):
 
 
 @app.route('/theme/<int:id_task>/<int:id_theme>', methods=['POST', 'GET'])
+@login_required
 def view_theme(id_task, id_theme):
     print('VIEW THEME...')
     if request.method == "POST":
@@ -133,29 +135,34 @@ def view_theme(id_task, id_theme):
 
 
 @app.route('/theme/<int:id_task>/<int:id_theme>/del')
+@login_required
 def view_theme_delete(id_task, id_theme):
     theme_delete(id_theme)
     return redirect(url_for('view_program_detail', id_task=id_task))
 
 
 @app.route('/roles')
+@login_required
 def view_roles():
     return render_template("roles.html", cursor=all_roles())
 
 
 @app.route('/alter-role/<int:id_user>/<string:role_name>')
+@login_required
 def view_alter_role_users(id_user, role_name):
     alter_role(id_user, role_name)
     return redirect(url_for('view_list_users'))
 
 
 @app.route('/role-delete/<int:id_role>')
+@login_required
 def view_role_delete(id_role):
     role_delete(id_role)
     return render_template("roles.html", cursor=all_roles())
 
 
 @app.route('/role-add', methods=['POST', 'GET'])
+@login_required
 def view_role_add():
     if cfg.debug_level > 1:
         print("Добавляем  Роль !")
@@ -172,6 +179,7 @@ def view_role_add():
 
 
 @app.route('/role-detail/<int:id_role>', methods=['POST', 'GET'])
+@login_required
 def view_role_upd(id_role):
     if cfg.debug_level > 1:
         print("Обновляем роль!")
@@ -188,11 +196,13 @@ def view_role_upd(id_role):
 
 
 @app.route('/role-detail/<int:id_role>')
+@login_required
 def view_role_detail(id_role):
     return render_template("roles.html", cursor=all_roles())
 
 
 @app.route('/role-users/<int:id_role>')
+@login_required
 def view_role_users(id_role):
     _all_users = all_users()
     _role_users = role_users(id_role)
@@ -204,29 +214,34 @@ def view_role_users(id_role):
 
 
 @app.route('/role-users-add/<int:id_role>/<int:id_user>')
+@login_required
 def view_role_users_add(id_role, id_user):
     role_user_add(id_role, id_user)
     return redirect(url_for('view_role_users', id_role=id_role))
 
 
 @app.route('/role-users-del/<int:id_role>/<int:id_user>')
+@login_required
 def view_role_users_del(id_role, id_user):
     role_user_del(id_role, id_user)
     return redirect(url_for('view_role_users', id_role=id_role))
 
 
 @app.route('/list-users')
+@login_required
 def view_list_users():
     return render_template("list_users.html", cursor=list_users())
 
 
 @app.route('/load-users')
+@login_required
 def view_load_users():
     load_operators('operators.xlsx')
     return redirect(url_for('view_list_users', cursor=list_users()))
 
 
 @app.route('/user/<int:id_user>', methods=['POST', 'GET'])
+@login_required
 def user_page(id_user):
     if request.method == "POST":
         username = request.form['username']
