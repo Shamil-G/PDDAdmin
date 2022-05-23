@@ -12,7 +12,7 @@ else:
 if using == 'PROD':
     dsn = '10.51.203.168:1521/pdd'
 else:
-    dsn = '10.51.203.168:1521/pdd'
+    dsn = '10.51.203.166:1521/pdd'
 
 if using[0:7] != 'DEV_WIN':
     pool_min = 20

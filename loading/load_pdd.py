@@ -32,7 +32,7 @@ def load_partition_questions(id_task, lang, partition_number, subpartition_numbe
     con = get_connection()
     cursor = con.cursor()
     # Создадим новое задание
-    file_split = os.path.splitext(file_name)
+    # file_split = os.path.splitext(file_name)
     # id_theme = cursor.callfunc('admin.theme_new', int, (id_task, file_split[0]))
     # if not id_theme:
     #     print('Ошибка регистрации нового задания...')
